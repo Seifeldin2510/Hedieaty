@@ -30,7 +30,7 @@ class _EventListPageState extends State<EventListPage> {
         leading: Image.asset("assets/stack-gift-boxes-icon-isolated.jpg"),
         actions: [
           DropdownButton(
-              icon: Icon(Icons.sort),
+              icon: Icon(Icons.sort , color: Colors.white,),
               items: sort.map((x){
                 return DropdownMenuItem(value: x,child: Text('$x'));
               }).toList(), onChanged: (var x)
@@ -47,7 +47,21 @@ class _EventListPageState extends State<EventListPage> {
           itemBuilder: (context,index){
             return ListTile(
               title: Text(myEvents[index]),
-              trailing: Icon(Icons.edit),
+              leading: IconButton(
+                onPressed: (){},
+                icon: Icon(Icons.edit),
+              ),
+              trailing:
+              IconButton(
+                onPressed: (){
+                  myEvents.removeAt(index);
+                  setState(() {
+
+                  });
+                },
+                icon: Icon(Icons.delete),
+              ),
+
             );
           },
           separatorBuilder: (context,index)
