@@ -113,6 +113,13 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()
+        {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.keyboard_backspace_outlined),
+      ),
     );
   }
 }
