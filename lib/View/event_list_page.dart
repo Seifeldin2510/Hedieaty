@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'gift_list_page.dart';
+
 class EventListPage extends StatefulWidget {
   const EventListPage({super.key});
 
@@ -46,7 +48,11 @@ class _EventListPageState extends State<EventListPage> {
           itemCount: myEvents.length,
           itemBuilder: (context,index){
             return ListTile(
-              title: Text(myEvents[index]),
+              title: InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftListPage()));
+                },
+                  child: Text(myEvents[index])),
               leading: IconButton(
                 onPressed: (){},
                 icon: Icon(Icons.edit),

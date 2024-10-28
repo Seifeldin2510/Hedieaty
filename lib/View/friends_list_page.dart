@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'event_list_page.dart';
 import 'gift_list_page.dart';
 
 class FriendsListPage extends StatefulWidget {
@@ -114,7 +115,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
                     ),
                     title: InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftListPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage()));
                       },
                       child:Text(Selectednames[index]),
                     ),
