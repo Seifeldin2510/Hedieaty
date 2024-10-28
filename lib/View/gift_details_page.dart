@@ -146,6 +146,13 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()
+        {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.keyboard_backspace_outlined),
+      ),
     );
   }
 }

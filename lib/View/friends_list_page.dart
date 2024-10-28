@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty/View/profile_page.dart';
 
 import 'event_list_page.dart';
 import 'gift_list_page.dart';
@@ -129,6 +130,13 @@ class _FriendsListPageState extends State<FriendsListPage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()
+        {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfilePage()));
+        },
+        child: Icon(Icons.person),
       ),
     );
   }
