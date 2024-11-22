@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Model/gifts_model.dart';
+import '../Services/gift_service.dart';
 import 'gift_details_page.dart';
 
 class GiftListPage extends StatefulWidget {
@@ -10,10 +12,24 @@ class GiftListPage extends StatefulWidget {
 }
 
 class _GiftListPageState extends State<GiftListPage> {
-
+  List<Gift> gifts = [];
+  bool loaded = false;
   List<String> sort = ["name" , "category" , "status"];
-  List<String> gifts = ["assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg"];
-  List<bool> pledge = [true,false,false,true,true,true,false,false];
+
+
+  getGifts()async{
+    gifts = await GiftService().getGifts();
+    loaded = true;
+    setState(() {
+
+    });
+  }
+@override
+  void initState() {
+    getGifts();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -35,7 +51,7 @@ class _GiftListPageState extends State<GiftListPage> {
         ],
       ),
 
-      body: GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      body: loaded?GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2
       ),
           itemCount: gifts.length,
@@ -44,7 +60,7 @@ class _GiftListPageState extends State<GiftListPage> {
             return Center(
               child: Padding(padding: EdgeInsets.all(10),
               child: Card(
-                color: pledge[index]?Colors.yellow:Colors.white,
+                color: gifts[index].pledge?Colors.yellow:Colors.white,
                 elevation: 20,
                 shadowColor: Color(0Xaaaaaa),
                 child:
@@ -52,21 +68,31 @@ class _GiftListPageState extends State<GiftListPage> {
                       children: [
                         Column(
                           children: [
-                            Image.asset(gifts[index], width: 100, height: 100,),
-                            SizedBox(
-                              height: 30,
+                            Center(
+                                child: Image.network(gifts[index].thumbnail, width: 100, height: 100,),
                             ),
-                            InkWell(
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftDetailsPage()));
-                                },
-                                child: Text("Gift number ${index + 1}")),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Center(
+                              child: Container(
+                                width: 100,
+                                child: InkWell(
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftDetailsPage()));
+                                    },
+                                    child: Text(gifts[index].title,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(
-                          width: 20,
+                          width: 2,
                         ),
-                        pledge[index]?Icon(Icons.check_box):Icon(Icons.check_box_outline_blank),
+                        gifts[index].pledge?Icon(Icons.check_box):Icon(Icons.check_box_outline_blank),
                       ],
                     ),
               ),
@@ -74,7 +100,9 @@ class _GiftListPageState extends State<GiftListPage> {
             );
           }
 
-      ),
+      ):Center(
+        child: CircularProgressIndicator(),
+      )
     );
   }
 }
