@@ -23,8 +23,8 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
   List<Widget> pages = [
     const FriendsListPage(),
-    const EventListPage(),
-    const GiftListPage(),
+    EventListPage(current: true,),
+    GiftListPage(current: true,),
   ];
 
   @override

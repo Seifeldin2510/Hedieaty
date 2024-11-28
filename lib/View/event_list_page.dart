@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/event_model.dart';
 
 import 'gift_list_page.dart';
 
 class EventListPage extends StatefulWidget {
-  const EventListPage({super.key});
+  bool current;
+   EventListPage({super.key ,required this.current});
 
   @override
   State<EventListPage> createState() => _EventListPageState();
@@ -13,7 +15,7 @@ class _EventListPageState extends State<EventListPage> {
 
   void _addEvent()
   {
-    myEvents.add("wedding");
+    events.add(Event(id: 5, name: "party", description:"party", date: "25/10/2024", location: "Party"));
     setState(() {
 
     });
@@ -21,7 +23,13 @@ class _EventListPageState extends State<EventListPage> {
 
   List<String> sort = ["name" , "category" , "status"];
 
-  List<String> myEvents = ['Graduation','Birthday'];
+ // List<String> myEvents = ['Graduation','Birthday'];
+  List<Event> events = [
+    Event(id: 1, name: "Birthday", description: "Party", date: "25/10/2025", location: "home"),
+    Event(id: 2, name: "Wedding", description: "Party", date: "25/10/2025", location: "home"),
+    Event(id: 3, name: "trip", description: "Party", date: "25/10/2025", location: "home"),
+    Event(id: 4, name: "Graduation", description: "Party", date: "25/10/2025", location: "Hall"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,42 +46,59 @@ class _EventListPageState extends State<EventListPage> {
               }).toList(), onChanged: (var x)
           {
             setState(() {
-              myEvents.sort();
+              //events.sort();
             });
           }),
         ],
       ),
       body: Center(
-        child: ListView.separated(
-          itemCount: myEvents.length,
-          itemBuilder: (context,index){
-            return ListTile(
-              title: InkWell(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftListPage()));
-                },
-                  child: Text(myEvents[index])),
-              leading: IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.edit),
-              ),
-              trailing:
-              IconButton(
-                onPressed: (){
-                  myEvents.removeAt(index);
-                  setState(() {
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.separated(
+                  itemCount: events.length,
+                  itemBuilder: (context,index){
+                    return ListTile(
+                      title: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftListPage(current: widget.current,)));
+                        },
+                          child: Card(
+                            child: ListTile(
+                              title: Text(events[index].name),
+                              subtitle: Text(events[index].date),
+                            ),
+                          )
+                      ),
+                      leading: widget.current ?IconButton(
+                        onPressed: (){},
+                        icon: Icon(Icons.edit),
+                      ):Icon(Icons.event_note),
+                      trailing:widget.current?IconButton(
+                        onPressed: (){
+                          events.removeAt(index);
+                          setState(() {
 
-                  });
-                },
-                icon: Icon(Icons.delete),
+                          });
+                        },
+                        icon: Icon(Icons.delete),
+                      ):null
+                    );
+                  },
+                  separatorBuilder: (context,index)
+                  {
+                    return Divider();
+                  },
+                ),
               ),
-
-            );
-          },
-          separatorBuilder: (context,index)
-          {
-            return Divider();
-          },
+            ),
+            widget.current? Text(""):ElevatedButton(onPressed: (){
+              Navigator.pop(context);
+            }, child: Text("Back"),
+    )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty/View/profile_page.dart';
 
+import '../Model/user_model.dart';
+import '../Services/user_service.dart';
 import 'event_list_page.dart';
 import 'gift_list_page.dart';
 
@@ -24,6 +26,21 @@ class _FriendsListPageState extends State<FriendsListPage> {
   TextEditingController searchController = TextEditingController();
   String searchValue = "";
   int index = 0;
+  List<User> users = [];
+  bool loaded = false;
+
+  getFriends()async{
+    users = await UserService().getFriends();
+    loaded = true;
+    setState(() {
+
+    });
+  }
+  @override
+  void initState() {
+    getFriends();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,97 +56,97 @@ class _FriendsListPageState extends State<FriendsListPage> {
               icon: const Icon(Icons.add))
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 275,
-                    child:
-                    TextField(
-                      controller: searchController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.search),
-                        hintText: "Search",
-                      ),
-                      onChanged: (var x)
-                      {
-                        setState(() {
-                          searchValue = x;
-                        });
-                      },
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 275,
+                  child:
+                  TextField(
+                    controller: searchController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      icon: Icon(Icons.search),
+                      hintText: "Search",
                     ),
+                    onChanged: (var x)
+                    {
+                      setState(() {
+                        searchValue = x;
+                      });
+                    },
                   ),
-                  Container(
-                    margin: const EdgeInsets.all(10.0) ,
-                    child: ElevatedButton(
-                      onPressed: ()
+                ),
+                Container(
+                  margin: const EdgeInsets.all(10.0) ,
+                  child: ElevatedButton(
+                    onPressed: ()
+                    {
+                      if(searchValue.isEmpty || searchValue == "")
                       {
-                        if(searchValue.isEmpty || searchValue == "")
-                        {
-                          Selectednames.removeRange(0, Selectednames.length);
-                          Selectednames.addAll(names);
-                          Selectedevents.removeRange(0, Selectedevents.length);
-                          Selectedevents.addAll(events);
-                          SelectedProfilePicture.removeRange(0, SelectedProfilePicture.length);
-                          SelectedProfilePicture.addAll(ProfilePicture);
-                        }
-                        else
-                        {
-                          searchValue = searchValue.toLowerCase();
-                          names.forEach((element) {
-                            if(element.toLowerCase() == searchValue)
-                            {
-                              Selectednames.removeRange(0, Selectednames.length);
-                              Selectednames.add(element);
-                              index = names.indexOf(element);
-                              Selectedevents.removeRange(0, Selectedevents.length);
-                              Selectedevents.add(events[index]);
-                              SelectedProfilePicture.removeRange(0, SelectedProfilePicture.length);
-                              SelectedProfilePicture.add(ProfilePicture[index]);
-                            }
-                          });
-                        }
-                        setState(() {
-
+                        Selectednames.removeRange(0, Selectednames.length);
+                        Selectednames.addAll(names);
+                        Selectedevents.removeRange(0, Selectedevents.length);
+                        Selectedevents.addAll(events);
+                        SelectedProfilePicture.removeRange(0, SelectedProfilePicture.length);
+                        SelectedProfilePicture.addAll(ProfilePicture);
+                      }
+                      else
+                      {
+                        searchValue = searchValue.toLowerCase();
+                        names.forEach((element) {
+                          if(element.toLowerCase() == searchValue)
+                          {
+                            Selectednames.removeRange(0, Selectednames.length);
+                            Selectednames.add(element);
+                            index = names.indexOf(element);
+                            Selectedevents.removeRange(0, Selectedevents.length);
+                            Selectedevents.add(events[index]);
+                            SelectedProfilePicture.removeRange(0, SelectedProfilePicture.length);
+                            SelectedProfilePicture.add(ProfilePicture[index]);
+                          }
                         });
                       }
-                      , child: const Text("Search"),
-                    ),
+                      setState(() {
+
+                      });
+                    }
+                    , child: const Text("Search"),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(
-              height: 500,
-              child: ListView.separated(
-                itemCount: Selectednames.length ,
-                itemBuilder:(context,index){
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: AssetImage(SelectedProfilePicture[index]),
-                    ),
-                    title: InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage()));
-                      },
-                      child:Text(Selectednames[index]),
-                    ),
-                    subtitle: Text(Selectedevents[index]),
-                  );
-                },
-                separatorBuilder: (context,index){
-                  return Divider();
-                },
-              ),
+          ),
+          loaded? Expanded(
+            child: ListView.separated(
+              itemCount: users.length ,
+              itemBuilder:(context,index){
+                return ListTile(
+                  leading: CircleAvatar(
+                    radius: 20,
+                    child: Image.network(users[index].image) ,
+                  ),
+                  title: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage(current: false,)));
+                    },
+                    child:Text("${users[index].firstName} ${users[index].lastName}"),
+                  ),
+                  subtitle: Text("Event ${users[index].eventNumber}"),
+                );
+              },
+              separatorBuilder: (context,index){
+                return Divider();
+              },
             ),
-          ],
-        ),
+          )
+              :Center(
+            child: CircularProgressIndicator(),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()
