@@ -18,7 +18,7 @@ class User {
     required this.username,
     required this.password,
     required this.image,
-    this.eventNumber = 3,
+    this.eventNumber = 0,
   });
 
   Map<String, dynamic> toJson() => {
