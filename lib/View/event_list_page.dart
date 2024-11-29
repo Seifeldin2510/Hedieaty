@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:hedieaty/Model/event_model.dart';
+import 'package:hedieaty/View/add_event_page.dart';
 
 import 'gift_list_page.dart';
 
@@ -73,7 +75,9 @@ class _EventListPageState extends State<EventListPage> {
                           )
                       ),
                       leading: widget.current ?IconButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddEventPage(id: events[index].id,name: events[index].name,date: events[index].date,description: events[index].description,location: events[index].location,)));
+                        },
                         icon: Icon(Icons.edit),
                       ):Icon(Icons.event_note),
                       trailing:widget.current?IconButton(
@@ -101,9 +105,16 @@ class _EventListPageState extends State<EventListPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addEvent,
-        child: Icon(Icons.add),
+      floatingActionButton: Visibility(
+        visible: widget.current?true:false,
+        child: FloatingActionButton(
+
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddEventPage(id: 0,name: "",date: "",description: "",location: "",)));
+            _addEvent();
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

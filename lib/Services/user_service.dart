@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 
 import '../Model/user_model.dart';
@@ -22,4 +23,6 @@ class UserService{
     }
     return users;
   }
+
+
 }
