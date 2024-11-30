@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class Database{
+class DatabaseClass{
   static Database? _MyDataBase;
   int Version = 1;
 
@@ -21,7 +21,7 @@ class Database{
     
     String myPath = await getDatabasesPath();
     String path = join(myPath,'myDataBase.db');
-    Database mydb = (await openDatabase(path,version:Version,
+    Database mydb = await openDatabase(path,version:Version,
     onCreate: (db,Version)async{
       db.execute('''
       Drop DATABASE myDataBase;
@@ -239,38 +239,38 @@ class Database{
     
       ''');
       print("DATABASE HAS BEEN CREATED ........");
-    })) as Database;
+    });
     return mydb;
 
   }
 
-  // readData(String SQL)async{
-  //   Database? mydata = await MyDataBase;
-  //   var response = await mydata!.rawQuery(SQL);
-  //   return response;
-  // }
-  //
-  // insertData(String SQL)async{
-  //   Database? mydata = await MyDataBase;
-  //   int response = await mydata!.rawInsert(SQL);
-  //   return response;
-  //
-  // }
-  //
-  //
-  // deleteData(String SQL)async{
-  //   Database? mydata = await MyDataBase;
-  //   int response = await mydata!.rawDelete(SQL);
-  //   return response;
-  //
-  // }
-  //
-  // updateData(String SQL)async{
-  //   Database? mydata = await MyDataBase;
-  //   int response = await mydata!.rawUpdate(SQL);
-  //   return response;
-  //
-  // }
+  readData(String SQL)async{
+    Database? mydata = await MyDataBase;
+    var response = await mydata!.rawQuery(SQL);
+    return response;
+  }
+
+  insertData(String SQL)async{
+    Database? mydata = await MyDataBase;
+    int response = await mydata!.rawInsert(SQL);
+    return response;
+
+  }
+
+
+  deleteData(String SQL)async{
+    Database? mydata = await MyDataBase;
+    int response = await mydata!.rawDelete(SQL);
+    return response;
+
+  }
+
+  updateData(String SQL)async{
+    Database? mydata = await MyDataBase;
+    int response = await mydata!.rawUpdate(SQL);
+    return response;
+
+  }
 
 
 }
