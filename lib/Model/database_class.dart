@@ -16,56 +16,63 @@ class DatabaseClass{
     }
 
   }
-
   initialize()async{
-    
+    print("1");
     String myPath = await getDatabasesPath();
-    String path = join(myPath,'myDataBase.db');
+    String path = join(myPath,'ProjectDataBase.db');
+    print("2");
     Database mydb = await openDatabase(path,version:Version,
-    onCreate: (db,Version)async{
-      db.execute(''' 
-      Create Table If Not Exists "Users"(
-      'ID' Integer Not null Primary Key AutoIncrement,
-      'Firstname' Text not null,
-      'Lastname' Text not null,
-      'age' int not null,
-      'Email' Text not null,
-      'UserName' Text not null,
-      'Password' Text not null,
-      'Image' Text not null
+    onCreate: (db,version)async{
+      print(3);
+     await db.execute(''' 
+      CREATE TABLE IF NOT EXISTS Users (
+        ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        Firstname TEXT NOT NULL,
+        Lastname TEXT NOT NULL,
+        age INTEGER NOT NULL,
+        Email TEXT NOT NULL,
+        UserName TEXT NOT NULL,
+        Password TEXT NOT NULL,
+        Image TEXT NOT NULL
       );
-      
-      Create Table If not exists 'Events'(
-      'ID' Integer not null Primary key autoincrement,
-      'Name' Text not null,
-      'Description' Text not null,
-      'Date' Text not null,
-      'Location' Text not null,
-      'UserID' Integer not null,
-      Foreign key (UserID) REFERENCES Users (ID) on delete no action on update no action
-      );
-      
-      Create Table If not exists 'Gifts'(
-      'ID' Integer not null Primary key autoincrement,
-      'Title' Text not null,
-      'Description' Text not null,
-      'Thumbnail' Text not null,
-      'Brand' Text not null,
-      'Category' Text not null,
-      'Price' Double not null,
-      'Pledge' Boolean not null,
-      'EventId' Integer not null,
-      Foreign key (EventId) REFERENCES Events (id) on delete no action on update no action
-      );
-      
-      
-      Create Table If not exists 'Friends'(
-      'UserId' Integer REFERENCES Users(ID) not null ,
-      'FriendId' Integer REFERENCES Users(ID) not null ,
-      Primary key (UserId,FriendId)
-      );
-     
       ''');
+      await db.execute('''
+      CREATE TABLE IF NOT EXISTS Events (
+        ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        Name TEXT NOT NULL,
+        Description TEXT NOT NULL,
+        Date TEXT NOT NULL,
+        Location TEXT NOT NULL,
+        UserID INTEGER NOT NULL,
+        FOREIGN KEY (UserID) REFERENCES Users (ID)
+          ON DELETE NO ACTION 
+          ON UPDATE NO ACTION
+      );
+      ''');
+      await db.execute('''
+      CREATE TABLE IF NOT EXISTS Gifts (
+        ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        Title TEXT NOT NULL,
+        Description TEXT NOT NULL,
+        Thumbnail TEXT NOT NULL,
+        Brand TEXT NOT NULL,
+        Category TEXT NOT NULL,
+        Price REAL NOT NULL,
+        Pledge INTEGER NOT NULL CHECK (Pledge IN (0, 1)),
+        EventId INTEGER NOT NULL,
+        FOREIGN KEY (EventId) REFERENCES Events (ID)
+          ON DELETE NO ACTION 
+          ON UPDATE NO ACTION
+      );
+      ''');
+      await db.execute('''
+      CREATE TABLE IF NOT EXISTS Friends (
+        UserId INTEGER NOT NULL REFERENCES Users (ID),
+        FriendId INTEGER NOT NULL REFERENCES Users (ID),
+        PRIMARY KEY (UserId, FriendId)
+      );
+      ''');
+
       print("DATABASE HAS BEEN CREATED ........");
     });
     return mydb;

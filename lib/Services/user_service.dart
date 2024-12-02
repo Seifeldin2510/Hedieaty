@@ -10,6 +10,8 @@ class UserService{
   String endpoint = "https://dummyjson.com/user";
   static int count=2;
   static late String currentUserId;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  DatabaseClass mydb = DatabaseClass();
 
 
   Future<List<userModel>> getFriends() async {
@@ -35,8 +37,7 @@ int getcount()
   return UserService.count;
 }
 
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DatabaseClass mydb = DatabaseClass();
+
   Future<User?> signUp(String email,String password) async{
     try{
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
@@ -51,7 +52,6 @@ int getcount()
   Future<User?> signIn(String email , String password) async{
     try{
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      print(userCredential.user);
       return userCredential.user;
     }on FirebaseAuthException catch (e)
     {
@@ -97,24 +97,26 @@ int getcount()
   }
 
   Future addUserSQL(String firstname,String lastName,int age,String email,String username,String password,String image) async{
-    //await mydb.initialize();
-    // email = email.replaceAll('@', 'a');
-    // image = image.replaceAll(":", 'a');
-    // image = image.replaceAll("/", 'a');
+
+    email = email.replaceAll('@', 'a');
+    image = image.replaceAll(":", 'Z');
+    image = image.replaceAll("/", 'z');
     await mydb.insertData('''
     Insert into "Users"
      (Firstname,Lastname,age,Email,UserName,Password,Image)
     values
-    ($firstname,$lastName,$age,$email,$username,$password,$image)
+    ('$firstname','$lastName','$age','$email','$username','$password','$image')
     ''');
   }
 
   Future<int> getUserByemail(String email) async{
-    //email = email.replaceAll('@', 'a');
+    email = email.replaceAll('@', 'a');
     var x = await mydb.readData('''
-    select * from Users where Email = $email
+    select * from Users where Email = '$email'
     ''');
-    return x['id'];
+    print("Hi ${x}");
+    print("Hello ${x[0]['ID']}");
+    return x[0]['ID'];
   }
 
   Future getUsers(int id)async{

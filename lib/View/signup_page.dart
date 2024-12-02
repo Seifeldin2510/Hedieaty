@@ -33,9 +33,8 @@ class _SignupPageState extends State<SignupPage> {
   Future<void> authUser () async{
     User? x = await UserService().signUp(emailController.text, passwordController.text);
     if(x!=null) {
-      //await UserService().addUserSQL(firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
-      //int id = await UserService().getUserByemail(emailController.text);
-      int id =UserService().getcount();
+      await UserService().addUserSQL(firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
+      int id = await UserService().getUserByemail(emailController.text);
       await UserService().saveUserData(id,firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
       Navigator.of(context).pop();
       Navigator.push(

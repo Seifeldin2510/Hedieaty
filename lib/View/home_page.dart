@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   Future<void>getUserdata () async{
     DocumentSnapshot x = await UserService().getUserData();
     Map y = x.data() as Map;
-    currentUser = userModel(id: y['id'], firstName: y['firstName'], lastName: y['lastName'], age: y['age'], email: y['email'], username: y['username'], password: y['password'], image: y['image']);
+    currentUser = userModel(id: y['id'], firstName: y['Firstname'], lastName: y['Lastname'], age: y['age'], email: y['email'], username: y['username'], password: y['password'], image: y['image']);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt("currentUser", currentUser.id);
   }
