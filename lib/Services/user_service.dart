@@ -121,7 +121,7 @@ int getcount()
 
   Future getUsers(int id)async{
     var x = await mydb.readData('''
-    select * from Users where ID = $id
+    select * from Users where ID = '$id'
     ''');
     return x;
   }

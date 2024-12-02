@@ -12,7 +12,7 @@ class FriendService{
     mydb.insertData('''
     INSERT INTO Friends (UserId,FriendId)  
       VALUES  
-      ($id,$friendId)
+      ('$id','$friendId')
     ''');
   }
 
@@ -22,7 +22,7 @@ class FriendService{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? UserID = prefs.getInt("currentUser");
     List<Map> response = await mydb.readData('''
-  select * from Friends where UserId = $UserID
+  select * from Friends where UserId = '$UserID'
   ''');
     return response;
   }

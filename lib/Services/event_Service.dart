@@ -15,14 +15,14 @@ class EventService{
     Insert into 'Events'
     (Name, Description, Date, Location, UserID)
     values
-    ($name,$description,$date,$location,$UserID)
+    ('$name','$description','$date','$location','$UserID')
     ''');
   }
 
 Future<List<Map>> getallEventsSQL(int UserID) async
 {
   List<Map> response = await mydb.readData('''
-  select * from Events where UserID = $UserID
+  select * from Events where UserID = '$UserID'
   ''');
   return response;
 }
@@ -30,14 +30,14 @@ Future<List<Map>> getallEventsSQL(int UserID) async
 Future UpdateEvent(int id , String name , String date , String location , String description) async
 {
   await mydb.updateData('''
-  update Events set Name = $name,Description=$description,Date=$date,Location=$location
-  where ID = $id
+  update Events set Name = '$name',Description='$description',Date='$date',Location='$location'
+  where ID = '$id'
   ''');
 }
 
 Future deleteEvent(int id) async{
     await mydb.deleteData('''
-    delete from Events where ID = $id
+    delete from Events where ID = '$id'
     ''');
 }
 

@@ -32,14 +32,14 @@ class GiftService{
     await mydb.insertData('''
     INSERT INTO Gifts (Title, Description, Thumbnail, Brand, Category, Price, Pledge, EventId)  
       VALUES  
-      ($title,$description,$thumbnail,$brand,$category,$price,$pledge,$EventId)
+      ('$title','$description','$thumbnail','$brand','$category','$price','$pledge','$EventId')
     ''');
   }
 
   Future getGiftsSQL(int EventID) async
   {
     await mydb.insertData('''
-    select * from Gifts where EventId = $EventID
+    select * from Gifts where EventId = '$EventID'
     ''');
   }
 
