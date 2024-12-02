@@ -100,7 +100,7 @@ class _AddEventPageState extends State<AddEventPage> {
                             if(_formKey.currentState!.validate()){
                               if(widget.id==0)
                                 {
-                                  EventService().addEventFireBase(widget.id, nameController.text, dateController.text, locationController.text, descriptionController.text);
+                                  EventService().addEventFireBase(EventService().getCount(), nameController.text, dateController.text, locationController.text, descriptionController.text);
                                 }
                               else{
                                 //editEvent();

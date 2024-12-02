@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Services/user_service.dart';
 import 'package:hedieaty/View/home_page.dart';
 import 'package:hedieaty/View/signup_page.dart';
 
@@ -17,9 +19,28 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
 
 
-  Future<void> cacheUser() async {
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.setString("currentUser", emailController.text);
+  Future<void> authUser () async{
+    User? x = await UserService().signIn(emailController.text, passwordController.text);
+    if(x!=null) {
+      Navigator.of(context).pop();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const HomePage()));
+    }
+    else
+    {
+      SnackBar snackBar = SnackBar(
+        content:
+        const Text("Something is Wrong"),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: "Ok",
+          onPressed: (){},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
 
@@ -71,10 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (value == null || value.isEmpty) {
                               return "Email must not be empty";
                             }
-                            // else if(UserService().findUser(emailController.text)==-1)
-                            // {
-                            //   return "Wrong email";
-                            // }
                           },
                           decoration: const InputDecoration(
                             label: Text("Enter email"),),
@@ -88,10 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (value == null || value.length < 8) {
                               return "Password must be more than 8 characters";
                             }
-                            // else if(UserService.users[UserService().findUser(emailController.text)].password != passwordController.text)
-                            // {
-                            //   return "Wrong Password";
-                            // }
+
                           },
                           decoration: InputDecoration(
                             label: const Text("Enter password"),
@@ -109,15 +123,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       FloatingActionButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            cacheUser();
-                            Navigator.of(context).pop();
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => const HomePage()));
+                            authUser();
                           }
                         },
                         child: const Text("Login"),
                       ),
                       TextButton(onPressed: () {
+                        Navigator.pop(context);
                         Navigator.push(context, MaterialPageRoute(
                             builder: (context) => const SignupPage()));
                       },

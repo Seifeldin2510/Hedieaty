@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Services/user_service.dart';
+import 'package:hedieaty/View/home_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -15,6 +18,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   bool hidePassword = true;
@@ -25,10 +29,36 @@ class _SignupPageState extends State<SignupPage> {
 
     });
   }
-  void addUser()
-  {
-    //UserService().addUsers(User(name: nameController.text, email: emailController.text, password: passwordController.text));
+
+  Future<void> authUser () async{
+    User? x = await UserService().signUp(emailController.text, passwordController.text);
+    if(x!=null) {
+      //await UserService().addUserSQL(firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
+      //int id = await UserService().getUserByemail(emailController.text);
+      int id =UserService().getcount();
+      await UserService().saveUserData(id,firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
+      Navigator.of(context).pop();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const HomePage()));
+    }
+    else
+    {
+      SnackBar snackBar = SnackBar(
+        content:
+        const Text("Something is Wrong"),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: "Ok",
+          onPressed: (){},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +154,22 @@ class _SignupPageState extends State<SignupPage> {
                   ),
 
                   Padding(padding: const EdgeInsets.all(4.0),
+                    child:
+                    TextFormField(
+                      controller: imageController,
+                      validator: (value){
+                        if(value!.isEmpty)
+                        {
+                          return "image link must not be empty";
+                        }
+                      },
+                      decoration: const InputDecoration(label: Text("Enter Image link",)),
+                    ),
+                  ),
+
+
+
+                  Padding(padding: const EdgeInsets.all(4.0),
                     child:TextFormField(
                       obscureText:hidePassword ,
                       controller: passwordController,
@@ -171,19 +217,7 @@ class _SignupPageState extends State<SignupPage> {
                     onPressed: ()
                     {
                       if(_formKey.currentState!.validate()){
-                        addUser();
-                        SnackBar snackBar = SnackBar(
-                          content:
-                          const Text("You are signed up"),
-                          duration: const Duration(seconds: 5),
-                          action: SnackBarAction(
-                            label: "Go to login",
-                            onPressed: (){
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        authUser();
                       }
                       else{
                         SnackBar snackBar = SnackBar(

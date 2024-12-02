@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/user_model.dart';
+import 'package:hedieaty/Services/user_service.dart';
+import 'package:hedieaty/View/login_page.dart';
 import 'package:hedieaty/View/pledged_gift_list.dart';
 
 import 'event_list_page.dart';
@@ -15,6 +19,17 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+  userModel? currentUser;
+
+  Future<void>getUserdata () async{
+    DocumentSnapshot user = await UserService().getUserData();
+  }
+
+@override
+  void initState() {
+    getUserdata();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +121,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> PledgedGiftListPage()));
                     },
                       child: Text("Go to pledged gifts list"),
+                    ),
+                    ElevatedButton(onPressed: (){
+                      UserService().signOut();
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
+                    },
+                      child: Text("SignOut"),
                     ),
                   ],
                 ),

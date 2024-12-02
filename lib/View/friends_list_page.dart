@@ -26,7 +26,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
   TextEditingController searchController = TextEditingController();
   String searchValue = "";
   int index = 0;
-  List<User> users = [];
+  List<userModel> users = [];
   bool loaded = false;
 
   getFriends()async{

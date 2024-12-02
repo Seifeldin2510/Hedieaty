@@ -1,4 +1,4 @@
-class User {
+class userModel {
   int id;
   String firstName;
   String lastName;
@@ -9,7 +9,7 @@ class User {
   String image;
   int eventNumber;
 
-  User({
+  userModel({
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -32,8 +32,8 @@ class User {
     "image": image,
   };
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory userModel.fromJson(Map<String, dynamic> json) {
+    return userModel(
       id: json["id"],
       firstName: json["firstName"],
       lastName: json["lastName"],

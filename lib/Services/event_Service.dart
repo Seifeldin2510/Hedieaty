@@ -6,7 +6,7 @@ import 'package:hedieaty/Model/database_class.dart';
 class EventService{
   DatabaseClass mydb = DatabaseClass();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  static int count=1;
 
 
   Future addEventSQL(String name , String date , String location , String description,int UserID) async{
@@ -34,17 +34,23 @@ Future UpdateEvent(int id , String name , String date , String location , String
   ''');
 }
 
+Future deleteEvent(int id) async{
+    await mydb.deleteData('''
+    delete from Events where ID = $id
+    ''');
+}
 
 
 
-
-  Future<void>  fetchdata()async
+  Future<List> fetchdata()async
   {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').get();
+    List x=[];
     for (var doc in querySnapshot.docs)
       {
-        print(doc.data());
+        x.add(doc.data());
       }
+    return x;
   }
 
 
@@ -58,6 +64,21 @@ Future UpdateEvent(int id , String name , String date , String location , String
         'description':description,
         }
     );
+    count++;
   }
+
+  int getCount()
+  {
+    return EventService.count;
+  }
+
+
+
+
+
+
+
+
+
 
 }
