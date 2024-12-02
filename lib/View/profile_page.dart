@@ -19,11 +19,17 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController ageController = TextEditingController();
-  userModel? currentUser;
+  late userModel  currentUser;
 
   Future<void>getUserdata () async{
-    DocumentSnapshot user = await UserService().getUserData();
+    DocumentSnapshot x = await UserService().getUserData();
+    Map y = x.data() as Map;
+    currentUser = userModel(id: y['id'], firstName: y['firstName'], lastName: y['lastName'], age: y['age'], email: y['email'], username: y['username'], password: y['password'], image: y['image']);
+    nameController.text=currentUser.username;
+    emailController.text=currentUser.email;
+    ageController.text=currentUser.age.toString();
   }
+
 
 @override
   void initState() {

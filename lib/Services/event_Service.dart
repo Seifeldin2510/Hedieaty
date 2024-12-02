@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hedieaty/Model/database_class.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EventService{
   DatabaseClass mydb = DatabaseClass();
@@ -55,6 +56,8 @@ Future deleteEvent(int id) async{
 
 
   Future<void> addEventFireBase(int id , String name , String date , String location , String description)async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userid = prefs.getInt('currentUser');
     await firestore.collection('Events').add(
         {
         'id':id,
@@ -62,6 +65,7 @@ Future deleteEvent(int id) async{
         'date':date,
         'location':location,
         'description':description,
+        'userId':userid
         }
     );
     count++;
