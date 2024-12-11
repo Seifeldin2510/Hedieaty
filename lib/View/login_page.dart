@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hedieaty/Services/user_service.dart';
 import 'package:hedieaty/View/home_page.dart';
 import 'package:hedieaty/View/signup_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -22,6 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> authUser () async{
     User? x = await UserService().signIn(emailController.text, passwordController.text);
     if(x!=null) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      int id = await UserService().getUserByemail(emailController.text);
+      pref.setInt("currentUser", id );
       Navigator.of(context).pop();
       Navigator.push(
           context,

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty/Services/user_service.dart';
 import 'package:hedieaty/View/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -35,6 +36,8 @@ class _SignupPageState extends State<SignupPage> {
     if(x!=null) {
       await UserService().addUserSQL(firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
       int id = await UserService().getUserByemail(emailController.text);
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setInt("currentUser", id );
       await UserService().saveUserData(id,firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
       Navigator.of(context).pop();
       Navigator.push(

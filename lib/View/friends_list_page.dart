@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Services/friend_service.dart';
+import 'package:hedieaty/View/add_friend.dart';
 import 'package:hedieaty/View/profile_page.dart';
 
 import '../Model/user_model.dart';
@@ -30,7 +32,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
   bool loaded = false;
 
   getFriends()async{
-    users = await UserService().getFriends();
+    users = await FriendService().getAllFriendSQL();
     loaded = true;
     setState(() {
 
@@ -51,7 +53,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
         leading: Image.asset("assets/stack-gift-boxes-icon-isolated.jpg"),
         actions: [
           IconButton(onPressed: (){
-
+            Navigator.push(context, MaterialPageRoute(builder: (contex)=>AddFriend()));
           },
               icon: const Icon(Icons.add))
         ],
