@@ -24,13 +24,14 @@ Future<List<Map>> getallEventsSQL(int UserID) async
   List<Map> response = await mydb.readData('''
   select * from Events where UserID = '$UserID'
   ''');
+
   return response;
 }
 
-Future UpdateEvent(int id , String name , String date , String location , String description) async
+Future UpdateEvent(int id , String name , String date , String location , String description,int userid) async
 {
   await mydb.updateData('''
-  update Events set Name = '$name',Description='$description',Date='$date',Location='$location'
+  update Events set Name = '$name',Description='$description',Date='$date',Location='$location','userId'='$userid'
   where ID = '$id'
   ''');
 }
@@ -76,13 +77,37 @@ Future deleteEvent(int id) async{
     return EventService.count;
   }
 
+  Future<void> updateEventFire(int id , String name , String date , String location , String description,int userid) async{
+    final querySnapshot = await FirebaseFirestore.instance.collection('Events').where('id' ,isEqualTo: id).get();
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.update({
+        'id':id,
+        'name':name,
+        'date':date,
+        'location':location,
+        'description':description,
+        'userId':userid
+      });
+    }
+  }
+
+  Future<void> deleteEventFire(int id) async{
+    final querySnapshot = await FirebaseFirestore.instance.collection('Events').where('id' ,isEqualTo: id).get();
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
 
 
 
-
-
-
-
+  Future<int> getEventCount(int id) async
+  {
+    List<Map> response = await mydb.readData('''
+  select count(ID) from Events where UserID = '$id'
+  ''');
+    int count = response[0]["count(ID)"];
+    return count;
+  }
 
 
 }

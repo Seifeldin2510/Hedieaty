@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:hedieaty/Model/database_class.dart';
+import 'package:hedieaty/Services/event_Service.dart';
 
 import '../Model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -119,12 +120,15 @@ int getcount()
     return x[0]['ID'];
   }
 
-  Future getUsers(int id)async{
+  Future<userModel> getUsers(int id)async{
     var x = await mydb.readData('''
     select * from Users where ID = '$id'
     ''');
-    return x;
+    int count = await EventService().getEventCount(id);
+    userModel user = userModel(id: x['ID'], firstName: x['Firstname'], lastName: x['Lastname'], age: x['age'], email: x['Email'], username: x['UserName'], password: x['Password'], image: ((x['Image']).replaceAll('Z',':')).replaceAll('z','/'),eventNumber: count);
+    return user;
   }
+
 
 
 

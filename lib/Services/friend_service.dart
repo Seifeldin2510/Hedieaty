@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hedieaty/Model/database_class.dart';
 import 'package:hedieaty/Model/user_model.dart';
+import 'package:hedieaty/Services/event_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FriendService{
@@ -31,7 +32,8 @@ class FriendService{
    List<userModel> friends = [];
     for (int i =0 ;i<response.length;i++)
       {
-        friends.add(userModel(id: response[i]['ID'], firstName: response[i]['Firstname'], lastName: response[i]['Lastname'], age: response[i]['age'], email: response[i]['Email'], username: response[i]['UserName'], password: response[i]['Password'], image: ((response[i]['Image']).replaceAll('Z',':')).replaceAll('z','/')));
+        int count = await EventService().getEventCount(response[i]['ID']);
+        friends.add(userModel(id: response[i]['ID'], firstName: response[i]['Firstname'], lastName: response[i]['Lastname'], age: response[i]['age'], email: response[i]['Email'], username: response[i]['UserName'], password: response[i]['Password'], image: ((response[i]['Image']).replaceAll('Z',':')).replaceAll('z','/'),eventNumber: count));
       }
     return friends;
   }

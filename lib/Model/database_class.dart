@@ -17,13 +17,10 @@ class DatabaseClass{
 
   }
   initialize()async{
-    print("1");
     String myPath = await getDatabasesPath();
     String path = join(myPath,'ProjectDataBase.db');
-    print("2");
     Database mydb = await openDatabase(path,version:Version,
     onCreate: (db,version)async{
-      print(3);
      await db.execute(''' 
       CREATE TABLE IF NOT EXISTS Users (
         ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

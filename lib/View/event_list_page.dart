@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hedieaty/Model/event_model.dart';
+import 'package:hedieaty/Services/event_Service.dart';
 import 'package:hedieaty/View/add_event_page.dart';
 
 import 'gift_list_page.dart';
@@ -81,7 +82,9 @@ class _EventListPageState extends State<EventListPage> {
                         icon: Icon(Icons.edit),
                       ):Icon(Icons.event_note),
                       trailing:widget.current?IconButton(
-                        onPressed: (){
+                        onPressed: () async {
+                          EventService().deleteEvent(events[index].id);
+                          EventService().deleteEventFire(events[index].id);
                           events.removeAt(index);
                           setState(() {
 

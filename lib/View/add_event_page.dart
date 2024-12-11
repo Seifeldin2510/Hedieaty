@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/user_model.dart';
 import 'package:hedieaty/Services/event_Service.dart';
+import 'package:hedieaty/Services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEventPage extends StatefulWidget {
   int id;
@@ -21,6 +24,26 @@ class _AddEventPageState extends State<AddEventPage> {
   TextEditingController dateController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  late int userId;
+
+  Future<void> getId() async{
+    SharedPreferences pref =  await SharedPreferences.getInstance();
+    userId = pref.getInt('currentUser')!;
+  }
+
+
+  @override
+  void initState() {
+    getId();
+    nameController.text = widget.name;
+    dateController.text = widget.date;
+    locationController.text = widget.location;
+    descriptionController.text = widget.description;
+    setState(() {
+
+    });
+    super.initState();
+  }
 
 
   @override
@@ -95,15 +118,19 @@ class _AddEventPageState extends State<AddEventPage> {
                         ),
 
                         FloatingActionButton(
-                          onPressed: ()
+                          onPressed: () async
                           {
                             if(_formKey.currentState!.validate()){
                               if(widget.id==0)
                                 {
-                                  EventService().addEventFireBase(EventService().getCount(), nameController.text, dateController.text, locationController.text, descriptionController.text);
+                                  await EventService().addEventSQL(nameController.text, dateController.text, locationController.text, descriptionController.text, userId);
+                                  await EventService().getallEventsSQL(userId);
+                                  await EventService().addEventFireBase(EventService().getCount(), nameController.text, dateController.text, locationController.text, descriptionController.text);
                                 }
                               else{
-                                //editEvent();
+                                await EventService().UpdateEvent(widget.id,nameController.text, dateController.text, locationController.text, descriptionController.text, userId);
+                                await EventService().updateEventFire(widget.id,nameController.text, dateController.text, locationController.text, descriptionController.text, userId);
+
                               }
                             }
                           },
