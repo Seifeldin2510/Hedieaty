@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hedieaty/Model/database_class.dart';
+import 'package:hedieaty/Model/event_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventService{
@@ -19,13 +20,17 @@ class EventService{
     ''');
   }
 
-Future<List<Map>> getallEventsSQL(int UserID) async
+Future<List<Event>> getallEventsSQL(int UserID) async
 {
   List<Map> response = await mydb.readData('''
   select * from Events where UserID = '$UserID'
   ''');
-
-  return response;
+  List<Event> events = [];
+  for (int i =0 ;i<response.length;i++)
+  {
+    events.add(Event(id: response[i]['ID'], name: response[i]['Name'], description: response[i]['Description'], date: response[i]['Date'], location: response[i]['Location']));
+  }
+  return events;
 }
 
 Future UpdateEvent(int id , String name , String date , String location , String description,int userid) async
@@ -108,6 +113,17 @@ Future deleteEvent(int id) async{
     int count = response[0]["count(ID)"];
     return count;
   }
+
+
+  Future<int> getNewEventId(String name , String date , String location , String description,int UserID) async
+  {
+    List<Map> response = await mydb.readData('''
+  select ID from Events Where name = '$name' and location = '$location' and description = '$description' and date = '$date' and userId = '$UserID'
+  ''');
+    int id = response[0]["ID"];
+    return id;
+  }
+
 
 
 }

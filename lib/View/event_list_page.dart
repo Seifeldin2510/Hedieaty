@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:hedieaty/Model/event_model.dart';
 import 'package:hedieaty/Services/event_Service.dart';
 import 'package:hedieaty/View/add_event_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'gift_list_page.dart';
 
 class EventListPage extends StatefulWidget {
   bool current;
-   EventListPage({super.key ,required this.current});
+  int userId;
+   EventListPage({super.key ,required this.current,required this.userId});
 
   @override
   State<EventListPage> createState() => _EventListPageState();
@@ -16,23 +18,28 @@ class EventListPage extends StatefulWidget {
 
 class _EventListPageState extends State<EventListPage> {
 
-  void _addEvent()
+
+  List<String> sort = ["name" , "category" , "status"];
+
+ // List<String> myEvents = ['Graduation','Birthday'];
+  List<Event> events = [];
+  bool loaded = false;
+
+  Future<void> getEvents() async
   {
-    events.add(Event(id: 5, name: "party", description:"party", date: "25/10/2024", location: "Party"));
+    events = await EventService().getallEventsSQL(widget.userId);
+    loaded = true;
     setState(() {
 
     });
   }
 
-  List<String> sort = ["name" , "category" , "status"];
+  @override
+  void initState() {
+    getEvents();
+    super.initState();
+  }
 
- // List<String> myEvents = ['Graduation','Birthday'];
-  List<Event> events = [
-    Event(id: 1, name: "Birthday", description: "Party", date: "25/10/2025", location: "home"),
-    Event(id: 2, name: "Wedding", description: "Party", date: "25/10/2025", location: "home"),
-    Event(id: 3, name: "trip", description: "Party", date: "25/10/2025", location: "home"),
-    Event(id: 4, name: "Graduation", description: "Party", date: "25/10/2025", location: "Hall"),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +62,7 @@ class _EventListPageState extends State<EventListPage> {
         ],
       ),
       body: Center(
-        child: Column(
+        child: loaded?Column(
           children: [
             Expanded(
               child: Padding(
@@ -106,7 +113,7 @@ class _EventListPageState extends State<EventListPage> {
             }, child: Text("Back"),
     )
           ],
-        ),
+        ):CircularProgressIndicator(),
       ),
       floatingActionButton: Visibility(
         visible: widget.current?true:false,
@@ -114,7 +121,6 @@ class _EventListPageState extends State<EventListPage> {
 
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddEventPage(id: 0,name: "",date: "",description: "",location: "",)));
-            _addEvent();
           },
           child: Icon(Icons.add),
         ),

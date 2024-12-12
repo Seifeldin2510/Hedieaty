@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hedieaty/Model/user_model.dart';
 import 'package:hedieaty/Services/event_Service.dart';
 import 'package:hedieaty/Services/user_service.dart';
+import 'package:hedieaty/View/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEventPage extends StatefulWidget {
@@ -124,8 +125,8 @@ class _AddEventPageState extends State<AddEventPage> {
                               if(widget.id==0)
                                 {
                                   await EventService().addEventSQL(nameController.text, dateController.text, locationController.text, descriptionController.text, userId);
-                                  await EventService().getallEventsSQL(userId);
-                                  await EventService().addEventFireBase(EventService().getCount(), nameController.text, dateController.text, locationController.text, descriptionController.text);
+                                  int newId = await EventService().getNewEventId(nameController.text, dateController.text, locationController.text, descriptionController.text, userId);
+                                  await EventService().addEventFireBase(newId, nameController.text, dateController.text, locationController.text, descriptionController.text);
                                 }
                               else{
                                 await EventService().UpdateEvent(widget.id,nameController.text, dateController.text, locationController.text, descriptionController.text, userId);
@@ -133,6 +134,9 @@ class _AddEventPageState extends State<AddEventPage> {
 
                               }
                             }
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                           },
                           child: widget.id==0? Text("Add"):Text("Edit"),
                         ),
