@@ -73,7 +73,7 @@ class _EventListPageState extends State<EventListPage> {
                     return ListTile(
                       title: InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftListPage(current: widget.current,)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftListPage(current: widget.current,eventId: events[index].id,)));
                         },
                           child: Card(
                             child: ListTile(

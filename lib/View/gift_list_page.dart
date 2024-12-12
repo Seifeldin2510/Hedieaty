@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty/View/add_new_gift.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Model/gifts_model.dart';
 import '../Services/gift_service.dart';
@@ -6,7 +8,8 @@ import 'gift_details_page.dart';
 
 class GiftListPage extends StatefulWidget {
   bool current;
-  GiftListPage({super.key,required this.current});
+  int eventId;
+  GiftListPage({super.key,required this.current,required this.eventId});
 
   @override
   State<GiftListPage> createState() => _GiftListPageState();
@@ -17,12 +20,19 @@ class _GiftListPageState extends State<GiftListPage> {
   bool loaded = false;
   List<String> sort = ["name" , "category" , "status"];
 
-
   getGifts()async{
-    gifts = await GiftService().getGifts();
+    if(widget.eventId == 0)
+      {
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+        int id = pref.getInt("currentUser")!;
+        gifts = await GiftService().getAllCurrentUserGifts(id);
+      }
+    else
+    {
+      gifts = await GiftService().getGiftsSQL(widget.eventId);
+    }
     loaded = true;
     setState(() {
-
     });
   }
 @override
@@ -74,7 +84,7 @@ class _GiftListPageState extends State<GiftListPage> {
                               Column(
                                 children: [
                                   Center(
-                                      child: Image.network(gifts[index].thumbnail, width: 100, height: 100,),
+                                      child: Image.network(gifts[index].thumbnail.replaceAll('Z', '/'), width: 100, height: 100,),
                                   ),
                                   SizedBox(
                                     height: 2,
@@ -107,11 +117,19 @@ class _GiftListPageState extends State<GiftListPage> {
 
             ),
           ),
-          widget.current? Text(""):ElevatedButton(onPressed: (){
+          widget.current? Text(""):(widget.eventId==0?Text(""):ElevatedButton(onPressed: (){
     Navigator.pop(context);
     }, child: Text("Back"),
-    ),
-      ]):
+    )),
+      widget.current?(widget.eventId == 0?Text(""):
+      ElevatedButton(onPressed: (){
+        Navigator.push(context,MaterialPageRoute(builder: (context)=>AddNewGift(eventId:widget.eventId)));
+      }, child: Text("Add New Gift"),
+      )
+      ):
+      Text(""),
+        ],
+      ):
       Center(
         child: CircularProgressIndicator(),
       )

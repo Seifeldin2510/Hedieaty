@@ -32,7 +32,6 @@ class _AddEventPageState extends State<AddEventPage> {
     userId = pref.getInt('currentUser')!;
   }
 
-
   @override
   void initState() {
     getId();

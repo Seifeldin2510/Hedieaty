@@ -21,10 +21,14 @@ class _AddFriendState extends State<AddFriend> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ADD friend'),
+        backgroundColor: const Color(0xff617ddf),
+        title: const Text("Add Friend"),
+        leading: Image.asset("assets/stack-gift-boxes-icon-isolated.jpg"),
       ),
       body: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                  Expanded(
                     child:Center(

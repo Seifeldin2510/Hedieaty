@@ -133,7 +133,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
                   ),
                   title: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage(current: false,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage(current: false,userId: users[index].id,)));
                     },
                     child:Text("${users[index].firstName} ${users[index].lastName}"),
                   ),

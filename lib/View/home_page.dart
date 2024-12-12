@@ -25,9 +25,10 @@ class _HomePageState extends State<HomePage> {
     currentUser = userModel(id: y['id'], firstName: y['Firstname'], lastName: y['Lastname'], age: y['age'], email: y['email'], username: y['username'], password: y['password'], image: y['image']);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt("currentUser", currentUser.id);
-  }
-
-
+    pages.add(EventListPage(current: true,userId:currentUser.id));
+    pages.add(GiftListPage(current: true,eventId: 0,));
+    }
+  List<Widget> pages = [const FriendsListPage(),];
   @override
   void initState() {
     getUserdata();
@@ -42,17 +43,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   int selectedIndex = 0;
-  List<Widget> pages = [
-    const FriendsListPage(),
-    EventListPage(current: true,),
-    GiftListPage(current: true,),
-  ];
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[selectedIndex],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: changePage,

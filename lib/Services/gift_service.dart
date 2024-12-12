@@ -1,6 +1,9 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:hedieaty/Model/database_class.dart';
+import 'package:hedieaty/Model/event_model.dart';
+import 'package:hedieaty/Services/event_Service.dart';
 
 import '../Model/gifts_model.dart';
 
@@ -27,7 +30,7 @@ class GiftService{
     return gifts;
   }
 
-  Future addGiftSQL(String title,String description,String thumbnail , String brand , String category , double price , bool pledge,int EventId) async
+  Future addGiftSQL(String title,String description,String thumbnail , String brand , String category , double price , int pledge,int EventId) async
   {
     await mydb.insertData('''
     INSERT INTO Gifts (Title, Description, Thumbnail, Brand, Category, Price, Pledge, EventId)  
@@ -36,12 +39,44 @@ class GiftService{
     ''');
   }
 
-  Future getGiftsSQL(int EventID) async
+  Future<List<Gift>> getAllCurrentUserGifts(int userId)async{
+    List<Gift> gifts=[];
+    List<Event> events = await EventService().getallEventsSQL(userId);
+    for(int i = 0 ; i<events.length;i++)
+      {
+        List<Gift> gift = await getGiftsSQL(events[i].id);
+        gifts.addAll(gift);
+      }
+        return gifts;
+  }
+
+  Future<List<Gift>> getGiftsSQL(int EventID) async
   {
-    await mydb.insertData('''
+     List<Map> response = await mydb.readData('''
     select * from Gifts where EventId = '$EventID'
     ''');
+    List<Gift> gifts=[];
+    for (int i =0 ;i<response.length;i++)
+    {
+      gifts.add(Gift(id: response[i]['ID'], title: response[i]['Title'], description: response[i]['Description'], price: response[i]['Price'], brand: response[i]['Brand'], category: response[i]['Category'], thumbnail: response[i]['Thumbnail'],pledge: response[i]['Pledge']==0?false:true));
+    }
+    return gifts;
   }
+
+  Future<int> getNewGiftId(String title,String description,String thumbnail , String brand , String category , double price , int pledge,int EventId) async
+  {
+    List<Map> response = await mydb.readData('''
+  select ID from Gifts Where Title = '$title' and Description = '$description' and Thumbnail = '$thumbnail' and Brand = '$brand' and Category = '$category' and Price = '$price' and Pledge = '$pledge' and EventId = '$EventId'
+  ''');
+    int id = response[0]["ID"];
+    return id;
+  }
+
+
+
+
+
+
 
 
   Future<List> fetchdata()async
@@ -56,14 +91,14 @@ class GiftService{
   }
 
 
-  Future<void> addGiftFireBase(int id , String title,String description,String thumbnail , String brand , String category , double price , bool pledge,int EventId)async{
+  Future<void> addGiftFireBase(int id , String title,String description,String thumbnail , String brand , String category , double price , int pledge,int EventId)async{
     await firestore.collection('Gifts').add(
         {
           'id':id,
           'title':title,
           'description':description,
           'thumbnail':thumbnail,
-          'brand':description,
+          'brand':brand,
           'category':category,
           'price':price,
           'pledged':pledge,
