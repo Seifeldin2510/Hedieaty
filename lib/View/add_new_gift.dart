@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty/Services/gift_service.dart';
+import 'package:hedieaty/View/gift_list_page.dart';
 
 class AddNewGift extends StatefulWidget {
   int eventId;
-  AddNewGift({super.key,required this.eventId});
+  bool current;
+  AddNewGift({super.key,required this.eventId,required this.current});
 
   @override
   State<AddNewGift> createState() => _AddNewGiftState();
@@ -126,6 +128,9 @@ class _AddNewGiftState extends State<AddNewGift> {
                             await GiftService().addGiftSQL(titleController.text, descriptionController.text, thumbnailController.text.replaceAll('/', 'Z'), brandController.text, categoryController.text, double.parse(priceController.text), 0, widget.eventId);
                             int newId = await GiftService().getNewGiftId(titleController.text, descriptionController.text, thumbnailController.text.replaceAll('/', 'Z'), brandController.text, categoryController.text, double.parse(priceController.text), 0, widget.eventId);
                             await GiftService().addGiftFireBase(newId,titleController.text, descriptionController.text, thumbnailController.text, brandController.text, categoryController.text, double.parse(priceController.text), 0, widget.eventId);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftListPage(current: widget.current,eventId: widget.eventId,)));
                           }
                         },
                         child: Text("Add"),

@@ -40,6 +40,7 @@ class _SignupPageState extends State<SignupPage> {
       pref.setInt("currentUser", id );
       await UserService().saveUserData(id,firstNameController.text, lastNameController.text,int.parse(ageController.text),emailController.text,userNameController.text,passwordController.text,imageController.text);
       Navigator.of(context).pop();
+      Navigator.pop(context);
       Navigator.push(
           context,
           MaterialPageRoute(

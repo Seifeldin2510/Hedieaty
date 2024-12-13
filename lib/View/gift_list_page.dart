@@ -107,7 +107,18 @@ class _GiftListPageState extends State<GiftListPage> {
                               SizedBox(
                                 width: 2,
                               ),
-                              gifts[index].pledge?Icon(Icons.check_box):Icon(Icons.check_box_outline_blank),
+                              IconButton(onPressed: ()async{
+                                if(widget.eventId!=0 && !widget.current)
+                                {
+                                  gifts[index].pledge = !(gifts[index].pledge);
+                                  await GiftService().UpdateGift(gifts[index].id, gifts[index].title, gifts[index].description.replaceAll("'", "''"), gifts[index].thumbnail.replaceAll('/', 'Z'), gifts[index].brand, gifts[index].category, gifts[index].price, gifts[index].pledge ? 1 : 0, widget.eventId);
+                                  await GiftService().updateGiftFire(gifts[index].id, gifts[index].title, gifts[index].description, gifts[index].thumbnail, gifts[index].brand, gifts[index].category, gifts[index].price, gifts[index].pledge ? 1 : 0, widget.eventId);
+                                  setState(() {
+
+                                  });
+                                }
+                              },
+                                icon: gifts[index].pledge?Icon(Icons.check_box):Icon(Icons.check_box_outline_blank),)
                             ],
                           ),
                     ),
@@ -117,13 +128,9 @@ class _GiftListPageState extends State<GiftListPage> {
 
             ),
           ),
-          widget.current? Text(""):(widget.eventId==0?Text(""):ElevatedButton(onPressed: (){
-    Navigator.pop(context);
-    }, child: Text("Back"),
-    )),
       widget.current?(widget.eventId == 0?Text(""):
       ElevatedButton(onPressed: (){
-        Navigator.push(context,MaterialPageRoute(builder: (context)=>AddNewGift(eventId:widget.eventId)));
+        Navigator.push(context,MaterialPageRoute(builder: (context)=>AddNewGift(current: widget.current,eventId:widget.eventId)));
       }, child: Text("Add New Gift"),
       )
       ):
@@ -132,7 +139,16 @@ class _GiftListPageState extends State<GiftListPage> {
       ):
       Center(
         child: CircularProgressIndicator(),
-      )
+      ),
+      floatingActionButton: Visibility(
+        visible: widget.eventId == 0? false:true,
+        child: FloatingActionButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          child: Text("Back"),
+        ),
+      ),
     );
   }
 }

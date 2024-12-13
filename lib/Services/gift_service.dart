@@ -73,9 +73,32 @@ class GiftService{
   }
 
 
+  Future UpdateGift(int id , String title,String description,String thumbnail , String brand , String category , double price , int pledge,int EventId) async
+  {
+    await mydb.updateData('''
+  update Gifts set Title = '$title',Description = '$description' , Thumbnail = '$thumbnail' , Brand = '$brand' , Category = '$category' , Price = '$price' , Pledge = '$pledge' , EventId = '$EventId'
+  where ID = '$id'
+  ''');
+  }
 
 
 
+  Future<void> updateGiftFire(int id , String title,String description,String thumbnail , String brand , String category , double price , int pledge,int EventId) async{
+    final querySnapshot = await FirebaseFirestore.instance.collection('Gifts').where('id' ,isEqualTo: id).get();
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.update({
+        'id':id,
+        'title':title,
+        'description':description,
+        'thumbnail':thumbnail,
+        'brand':brand,
+        'category':category,
+        'price':price,
+        'pledged':pledge,
+        'eventId':EventId,
+      });
+    }
+  }
 
 
 
