@@ -70,6 +70,15 @@ class DatabaseClass{
       );
       ''');
 
+     await db.execute('''
+      CREATE TABLE IF NOT EXISTS Notifications (
+        Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        Email TEXT NOT NULL,
+        message TEXT NOT NULL,
+        UserId INTEGER NOT NULL REFERENCES Users (ID)
+      );
+      ''');
+
       print("DATABASE HAS BEEN CREATED ........");
     });
     return mydb;

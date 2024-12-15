@@ -13,6 +13,9 @@ Future<void> fireBaseInit() async
 Future<void>dataBaseInit()async{
   DatabaseClass mydb = DatabaseClass();
   await mydb.initialize();
+  // mydb.deleteData('''
+  // delete from Friends
+  // ''');
 }
 
 void main() {

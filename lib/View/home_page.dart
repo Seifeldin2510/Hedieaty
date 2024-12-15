@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hedieaty/Model/user_model.dart';
 import 'package:hedieaty/Services/user_service.dart';
 import 'package:hedieaty/View/friends_list_page.dart';
+import 'package:hedieaty/View/notification_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'event_list_page.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     prefs.setInt("currentUser", currentUser.id);
     pages.add(EventListPage(current: true,userId:currentUser.id));
     pages.add(GiftListPage(current: true,eventId: 0,));
+    pages.add(notificationPage());
     }
   List<Widget> pages = [const FriendsListPage(),];
   @override
@@ -49,7 +51,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar:
+      BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: changePage,
         items:const  [
@@ -64,6 +68,10 @@ class _HomePageState extends State<HomePage> {
            BottomNavigationBarItem(
             label: "Gifts",
               icon: Icon(Icons.card_giftcard),
+          ),
+          BottomNavigationBarItem(
+            label: "notifications",
+            icon: Icon(Icons.notifications),
           ),
         ],
       ),
