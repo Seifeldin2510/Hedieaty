@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/database_class.dart';
 import 'package:hedieaty/Model/user_model.dart';
 import 'package:hedieaty/Services/user_service.dart';
 import 'package:hedieaty/View/login_page.dart';
@@ -133,6 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     ElevatedButton(onPressed: (){
                       UserService().signOut();
+                     // DatabaseClass().deleteDataBaseToSync();
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
                     },
                       child: Text("SignOut"),

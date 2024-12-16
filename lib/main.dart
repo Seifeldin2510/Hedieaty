@@ -16,6 +16,9 @@ Future<void>dataBaseInit()async{
   // mydb.deleteData('''
   // delete from Friends
   // ''');
+  // mydb.deleteData('''
+  // delete from Notifications
+  // ''');
 }
 
 void main() {

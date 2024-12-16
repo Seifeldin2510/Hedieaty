@@ -15,7 +15,7 @@ class _notificationPageState extends State<notificationPage> {
 
 
   Future<void>getNotifications()async{
-    //notifications = await notificationService().getNotificationsSQL();
+    notifications = await notificationService().getNotificationsSQL();
     loaded = true;
     setState(() {
 
@@ -46,7 +46,7 @@ class _notificationPageState extends State<notificationPage> {
                 return ListTile(
                   title: Text("${notifications[index].message}"),
 
-                  subtitle: Text("sender email: ${notifications[index].message}"),
+                  subtitle: Text("sender email: ${notifications[index].userEmail.replaceFirst("agmail", "@gmail")}"),
                 );
               },
               separatorBuilder: (context,index){

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/user_model.dart';
 import 'package:hedieaty/Services/friend_service.dart';
+import 'package:hedieaty/Services/notification_service.dart';
 import 'package:hedieaty/View/friends_list_page.dart';
 import 'package:hedieaty/View/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +63,11 @@ class _AddFriendState extends State<AddFriend> {
                   int id = await UserService().getUserByemail(friendEmailController.text);
                   FriendService().addFriend(myId,id);
                   FriendService().addFriendsFireBase(id);
+                  userModel user = await UserService().getUsers(myId);
+                  String message = "User ${user.username} add you to his friends List";
+                  await notificationService().addNotificationSQL(message, user.email, id);
+                  int notificationId = await notificationService().getNewNotificationsAddSQL(message, user.email, id);
+                  await notificationService().addNotificationToFireBase(notificationId, message, user.email, id);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
@@ -71,6 +78,12 @@ class _AddFriendState extends State<AddFriend> {
                 ],
                   ),
                 ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text("back"),
+      ),
               );
   }
 }

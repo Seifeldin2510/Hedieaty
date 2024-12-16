@@ -113,5 +113,11 @@ class DatabaseClass{
 
   }
 
+  deleteDataBaseToSync()async{
+    String myPath = await getDatabasesPath();
+    String path = join(myPath,'ProjectDataBase.db');
+    deleteDatabase(path);
+  }
+
 
 }

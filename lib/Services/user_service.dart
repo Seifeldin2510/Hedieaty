@@ -125,7 +125,7 @@ int getcount()
     select * from Users where ID = '$id'
     ''');
     int count = await EventService().getEventCount(id);
-    userModel user = userModel(id: x['ID'], firstName: x['Firstname'], lastName: x['Lastname'], age: x['age'], email: x['Email'], username: x['UserName'], password: x['Password'], image: ((x['Image']).replaceAll('Z',':')).replaceAll('z','/'),eventNumber: count);
+    userModel user = userModel(id: x[0]['ID'], firstName: x[0]['Firstname'], lastName: x[0]['Lastname'], age: x[0]['age'], email: x[0]['Email'], username: x[0]['UserName'], password: x[0]['Password'], image: ((x[0]['Image']).replaceAll('Z',':')).replaceAll('z','/'),eventNumber: count);
     return user;
   }
 

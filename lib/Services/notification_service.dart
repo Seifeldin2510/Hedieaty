@@ -9,17 +9,32 @@ class notificationService{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 
-  Future<void> addNotificationToFireBase(int id , String message,String email)async{
+  Future<void> addNotificationToFireBase(int id , String message,String email,int userId)async{
     // final SharedPreferences prefs = await SharedPreferences.getInstance();
     // int currentId = await prefs.getInt("currentUser")!;
     await firestore.collection('Notifications').add(
         {
           'id': id,
           'message':message,
-          'email' : email
+          'email' : email,
+          'userid':userId
         }
     );
   }
+
+
+
+  Future<void> addNotificationSQL(String message,String email, int userId) async
+  {
+    await mydb.insertData('''
+    Insert into 'Notifications'
+    (Email, message, UserId)
+    values
+    ('$email','$message','$userId')
+    ''');
+  }
+
+
 
   Future<List<notificationsModel>> getNotificationsSQL() async
   {
@@ -31,12 +46,20 @@ class notificationService{
     List<notificationsModel> notifications=[];
     for (int i =0 ;i<response.length;i++)
     {
-      notifications.add(notificationsModel(userEmail: response[i]['UserEmail'], message: response[i]['message']));
+      notifications.add(notificationsModel(userEmail: response[i]['Email'], message: response[i]['message']));
     }
     return notifications;
   }
 
 
+  Future<int> getNewNotificationsAddSQL(String message, String email,int id) async
+  {
+    List<Map> response = await mydb.readData('''
+    select * from Notifications where UserId = '$id' and Email = '$email' and message = '$message'
+    ''');
+    int notificationId = response[0]["Id"];
+    return notificationId;
+  }
 
 
 }
