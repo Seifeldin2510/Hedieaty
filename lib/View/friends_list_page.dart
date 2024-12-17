@@ -38,12 +38,12 @@ class _FriendsListPageState extends State<FriendsListPage> {
 
     });
   }
+
   @override
   void initState() {
     getFriends();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

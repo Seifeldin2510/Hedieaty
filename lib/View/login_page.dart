@@ -4,6 +4,10 @@ import 'package:hedieaty/Services/user_service.dart';
 import 'package:hedieaty/View/home_page.dart';
 import 'package:hedieaty/View/signup_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
+
+import '../Model/notifications_model.dart';
+import '../Services/notification_service.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -19,6 +23,20 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  getNotification()async{
+    notificationsModel notification = await notificationService().getLastNotificationsSQL();
+    toastification.show(
+      context: context,
+      type: ToastificationType.success,
+      style: ToastificationStyle.minimal,
+      title: Text(notification.message),
+      autoCloseDuration: const Duration(seconds: 5),
+      alignment: Alignment.topCenter,
+      primaryColor: Colors.white,
+      backgroundColor: Color(0xff617ddf),
+      foregroundColor: Colors.white,
+    );
+  }
 
   Future<void> authUser () async{
     User? x = await UserService().signIn(emailController.text, passwordController.text);
@@ -128,6 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             authUser();
+                            getNotification();
                           }
                         },
                         child: const Text("Login"),
