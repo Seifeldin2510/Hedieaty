@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty/Services/user_service.dart';
@@ -93,6 +95,14 @@ class _LoginScreenState extends State<LoginScreen> {
             width:MediaQuery.of(context).size.width ,
             fit: BoxFit.cover,
           ),
+          Positioned.fill(
+          child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              color: Colors.black.withOpacity(0),
+                ),
+              ),
+          ),
           Expanded(
             child: ListView(
               children: [
@@ -116,6 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           },
                           decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color:Colors.black,width: 5)
+                            ),
                             label: Text("Enter email"),),
                         ),
                       ),
@@ -130,6 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           },
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color:Colors.black,width: 5)
+                            ),
                             label: const Text("Enter password"),
                             suffixIcon: IconButton(onPressed: () {
                               hiddenPassword();
@@ -155,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(context, MaterialPageRoute(
                             builder: (context) => const SignupPage()));
                       },
-                        child: const Text("Click Here to signup",),
+                        child: const Text("Click Here to signup",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                       )
                     ],
                   ),

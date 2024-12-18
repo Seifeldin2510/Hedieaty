@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty/Services/user_service.dart';
@@ -83,6 +85,15 @@ class _SignupPageState extends State<SignupPage> {
         width:MediaQuery.of(context).size.width ,
         fit: BoxFit.cover,
       ),
+
+      Positioned.fill(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            color: Colors.black.withOpacity(0),
+          ),
+        ),
+      ),
           Center(
             child:
             Form(
@@ -100,7 +111,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "Name must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(label: Text("Enter First Name",)),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color:Colors.black,width: 5)
+                          ),
+                          label: Text("Enter First Name",)),
                     ),
                   ),
                   Padding(padding: const EdgeInsets.all(4.0),
@@ -113,7 +128,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "Name must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(label: Text("Enter Last Name",)),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color:Colors.black,width: 5)
+                          ),
+                          label: Text("Enter Last Name",)),
                     ),
                   ),
                   Padding(padding: const EdgeInsets.all(4.0),
@@ -126,7 +145,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "Name must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(label: Text("Enter User Name",)),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color:Colors.black,width: 5)
+                          ),
+                          label: Text("Enter User Name",)),
                     ),
                   ),
                   Padding(padding: const EdgeInsets.all(4.0),
@@ -139,7 +162,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "Age must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(label: Text("Enter Age",)),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color:Colors.black,width: 5)
+                          ),
+                          label: Text("Enter Age",)),
                     ),
                   ),
                   Padding(padding: const EdgeInsets.all(4.0),
@@ -152,7 +179,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "Email must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(label: Text("Enter email",),),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color:Colors.black,width: 5)
+                        ),
+                        label: Text("Enter email",),),
                     ),
                   ),
 
@@ -166,7 +197,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "image link must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(label: Text("Enter Image link",)),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color:Colors.black,width: 5)
+                          ),
+                          label: Text("Enter Image link",)),
                     ),
                   ),
 
@@ -182,7 +217,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "Password must be more than 8 characters";
                         }
                       },
-                      decoration: InputDecoration(label: const Text("Enter password",),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color:Colors.black,width: 5)
+                        ),
+                        label: const Text("Enter password",),
                         suffixIcon: IconButton(onPressed: (){
                           hiddenPassword();
                         },
@@ -204,7 +243,11 @@ class _SignupPageState extends State<SignupPage> {
                           return "Password must be same as above";
                         }
                       },
-                      decoration: InputDecoration(label:const  Text("Confirm password",),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color:Colors.black,width: 5)
+                        ),
+                        label:const  Text("Confirm password",),
                         suffixIcon: IconButton(onPressed: (){
                           hiddenPassword();
                         },
@@ -237,16 +280,16 @@ class _SignupPageState extends State<SignupPage> {
                     },
                     child: const Text("Signup"),
                   ),
-                ],),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(onPressed: (){
+                      Navigator.pop(context);
+                    }, child: Text("Back")),
+                  )
+                ],
+              ),
             ),
           ),
-
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ElevatedButton(onPressed: (){
-              Navigator.pop(context);
-            }, child: Text("Back")),
-          )
   ],
       ),
     );
