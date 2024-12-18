@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:animated_emoji/emoji.dart';
+import 'package:animated_emoji/emojis.dart';
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/gifts_model.dart';
 
 class GiftDetailsPage extends StatefulWidget {
-  const GiftDetailsPage({super.key});
+  Gift gift;
+  GiftDetailsPage({super.key,required this.gift});
 
   @override
   State<GiftDetailsPage> createState() => _GiftDetailsPageState();
@@ -25,125 +29,66 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
       title: const Text("hedieaty"),
       leading: Image.asset("assets/stack-gift-boxes-icon-isolated.jpg"),
       ),
-      body: ListView(
-        children: [
-          Form(
-              key : _formKey,
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+      body: Center(
+        child: Expanded(
+          child: ListView(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+                child: Image.network(widget.gift.thumbnail.replaceAll('Z', '/')),
+              ),
+              Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text("Name: ${widget.gift.title}",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                  ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Brand: ${widget.gift.brand}"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Category: ${widget.gift.category}"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Price: ${widget.gift.price}"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Description: ${widget.gift.description}"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: widget.gift.pledge?const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          Text("Name : "),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            width: 200,
-                            child: TextFormField(
-                              controller: nameController,
-                              decoration: InputDecoration(label: Text("Enter Name"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          Text("Description : "),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            width: 200,
-                            child: TextFormField(
-                              controller: descriptionController,
-                              decoration: InputDecoration(label: Text("Enter Description,"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          Text("Category : "),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            width: 200,
-                            child: TextFormField(
-                              controller: categoryController,
-                              decoration: InputDecoration(label: Text("Enter category"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          Text("Price : "),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            width: 200,
-                            child: TextFormField(
-                              controller: priceController,
-                              decoration: InputDecoration(label: Text("Enter Price"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ElevatedButton(onPressed: ()
-                        {
-                        },
-                        child: Text("Pick image from gallary"),
-                    ),
+                    Text("This gift has been pledged",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                     SizedBox(
-                      height: 20,
+                      width: 5,
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Pledged"),
-                        ),
-                        ToggleButtons(
-                          onPressed:(int index){
-                            setState(() {
-                              for(int buttonIndex = 0 ; buttonIndex < isSelected.length;buttonIndex++)
-                                {
-                                  if(buttonIndex == index)
-                                    {
-                                      isSelected[buttonIndex] = true;
-                                    }
-                                  else{
-                                    isSelected[buttonIndex] = false;
-                                  }
-                                }
-                            });
-                          } ,
-                            children: <Widget>[
-                              Icon(Icons.check_box),
-                              Icon(Icons.check_box_outline_blank),
-                            ], isSelected: isSelected),
-                      ],
-                    )
+                    AnimatedEmoji(
+                      AnimatedEmojis.smile,
+                    ),
+                  ],
+                ):const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("This gift has not been pledged",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    AnimatedEmoji(
+                      AnimatedEmojis.sad,
+                    ),
                   ],
                 ),
-              )
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()

@@ -17,22 +17,16 @@ class FriendsListPage extends StatefulWidget {
 
 class _FriendsListPageState extends State<FriendsListPage> {
 
-  List<String> names = ["Seif","Laurent","Tracy","Claire","Joe","Mark","Williams"];
-  List<String> ProfilePicture = ["assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg"];
-  List<String> events = ["event 1","event 1","event 2","event 4","No Upcoming Events","No Upcoming Events","event 10"];
-
-  List<String> Selectednames = ["Seif","Laurent","Tracy","Claire","Joe","Mark","Williams"];
-  List<String> SelectedProfilePicture = ["assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg"];
-  List<String> Selectedevents = ["event 1","event 1","event 2","event 4","No Upcoming Events","No Upcoming Events","event 10"];
-
   TextEditingController searchController = TextEditingController();
   String searchValue = "";
   int index = 0;
   List<userModel> users = [];
+  List<userModel> selectedUsers = [];
   bool loaded = false;
 
   getFriends()async{
     users = await FriendService().getAllFriendSQL();
+    selectedUsers = users;
     loaded = true;
     setState(() {
 
@@ -85,33 +79,8 @@ class _FriendsListPageState extends State<FriendsListPage> {
                 Container(
                   margin: const EdgeInsets.all(10.0) ,
                   child: ElevatedButton(
-                    onPressed: ()
-                    {
-                      if(searchValue.isEmpty || searchValue == "")
-                      {
-                        Selectednames.removeRange(0, Selectednames.length);
-                        Selectednames.addAll(names);
-                        Selectedevents.removeRange(0, Selectedevents.length);
-                        Selectedevents.addAll(events);
-                        SelectedProfilePicture.removeRange(0, SelectedProfilePicture.length);
-                        SelectedProfilePicture.addAll(ProfilePicture);
-                      }
-                      else
-                      {
-                        searchValue = searchValue.toLowerCase();
-                        names.forEach((element) {
-                          if(element.toLowerCase() == searchValue)
-                          {
-                            Selectednames.removeRange(0, Selectednames.length);
-                            Selectednames.add(element);
-                            index = names.indexOf(element);
-                            Selectedevents.removeRange(0, Selectedevents.length);
-                            Selectedevents.add(events[index]);
-                            SelectedProfilePicture.removeRange(0, SelectedProfilePicture.length);
-                            SelectedProfilePicture.add(ProfilePicture[index]);
-                          }
-                        });
-                      }
+                    onPressed: () {
+                      users = selectedUsers.where((user) => user.firstName.toLowerCase() == searchValue.toLowerCase()).toList();
                       setState(() {
 
                       });

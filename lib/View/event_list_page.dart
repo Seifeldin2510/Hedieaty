@@ -19,9 +19,8 @@ class EventListPage extends StatefulWidget {
 class _EventListPageState extends State<EventListPage> {
 
 
-  List<String> sort = ["name" , "category" , "status"];
+  List<String> sort = ["name"];
 
- // List<String> myEvents = ['Graduation','Birthday'];
   List<Event> events = [];
   bool loaded = false;
 
@@ -56,7 +55,7 @@ class _EventListPageState extends State<EventListPage> {
               }).toList(), onChanged: (var x)
           {
             setState(() {
-              //events.sort();
+              events.sort((a, b) => a.name.compareTo(b.name));
             });
           }),
         ],

@@ -18,7 +18,7 @@ class GiftListPage extends StatefulWidget {
 class _GiftListPageState extends State<GiftListPage> {
   List<Gift> gifts = [];
   bool loaded = false;
-  List<String> sort = ["name" , "category" , "status"];
+  List<String> sort = ["title" , "category" , "status"];
 
   getGifts()async{
     if(widget.eventId == 0)
@@ -56,8 +56,18 @@ class _GiftListPageState extends State<GiftListPage> {
               }).toList(), onChanged: (var x)
           {
             setState(() {
-              gifts.sort();
-            });
+              if(x=="title") {
+                    gifts.sort((a, b) => a.title.compareTo(b.title));
+                  }
+              else if(x=="category")
+                {
+                  gifts.sort((a, b) => a.category.compareTo(b.category));
+                }
+              else if(x=="status")
+                {
+                  gifts.sort((a, b) => a.pledge.toString().compareTo(b.pledge.toString()));
+                }
+                });
           }),
         ],
       ),
@@ -94,7 +104,7 @@ class _GiftListPageState extends State<GiftListPage> {
                                       width: 100,
                                       child: InkWell(
                                           onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftDetailsPage()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftDetailsPage(gift: gifts[index],)));
                                           },
                                           child: Text(gifts[index].title,
                                             overflow: TextOverflow.ellipsis,

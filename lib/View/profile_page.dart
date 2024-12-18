@@ -123,11 +123,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       thickness: 5,
                     ),
                     ElevatedButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage(current: true,userId:currentUser.id)));
-                    },
-                        child: Text("Go to event list"),
-                    ),
-                    ElevatedButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> PledgedGiftListPage()));
                     },
                       child: Text("Go to pledged gifts list"),
