@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Services/pledge_service.dart';
 import 'package:hedieaty/View/add_new_gift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -118,14 +119,26 @@ class _GiftListPageState extends State<GiftListPage> {
                                 width: 2,
                               ),
                               IconButton(onPressed: ()async{
-                                if(widget.eventId!=0 && !widget.current)
-                                {
-                                  gifts[index].pledge = !(gifts[index].pledge);
-                                  await GiftService().UpdateGift(gifts[index].id, gifts[index].title, gifts[index].description.replaceAll("'", "''"), gifts[index].thumbnail.replaceAll('/', 'Z'), gifts[index].brand, gifts[index].category, gifts[index].price, gifts[index].pledge ? 1 : 0, widget.eventId);
-                                  await GiftService().updateGiftFire(gifts[index].id, gifts[index].title, gifts[index].description, gifts[index].thumbnail, gifts[index].brand, gifts[index].category, gifts[index].price, gifts[index].pledge ? 1 : 0, widget.eventId);
-                                  setState(() {
+                                if(widget.eventId!=0 && !widget.current) {
+                                  bool check = await PledgedGiftService().checkPledgedUser(gifts[index].id);
+                                  if (check) {
+                                    gifts[index].pledge = !(gifts[index].pledge);
+                                    await GiftService().UpdateGift(gifts[index].id, gifts[index].title, gifts[index].description.replaceAll("'", "''"), gifts[index].thumbnail.replaceAll('/', 'Z'), gifts[index].brand, gifts[index].category, gifts[index].price, gifts[index].pledge ? 1 : 0, widget.eventId);
+                                    await GiftService().updateGiftFire(gifts[index].id, gifts[index].title, gifts[index].description, gifts[index].thumbnail, gifts[index].brand, gifts[index].category, gifts[index].price, gifts[index].pledge ? 1 : 0, widget.eventId);
+                                    if(gifts[index].pledge)
+                                      {
+                                        await PledgedGiftService().addPledgedGiftsSQl(gifts[index].id);
+                                        await PledgedGiftService().addPledgedGiftToFireBase(gifts[index].id);
+                                      }
+                                    else
+                                      {
+                                        await PledgedGiftService().deletePledgedGift(gifts[index].id);
+                                        await PledgedGiftService().deletePledgedGiftFire(gifts[index].id);
+                                      }
+                                    setState(() {
 
-                                  });
+                                    });
+                                  }
                                 }
                               },
                                 icon: gifts[index].pledge?Icon(Icons.check_box):Icon(Icons.check_box_outline_blank),)

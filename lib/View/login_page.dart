@@ -25,21 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  getNotification()async{
-    notificationsModel notification = await notificationService().getLastNotificationsSQL();
-    toastification.show(
-      context: context,
-      type: ToastificationType.success,
-      style: ToastificationStyle.minimal,
-      title: Text(notification.message),
-      autoCloseDuration: const Duration(seconds: 5),
-      alignment: Alignment.topCenter,
-      primaryColor: Colors.white,
-      backgroundColor: Color(0xff617ddf),
-      foregroundColor: Colors.white,
-    );
-  }
-
   Future<void> authUser () async{
     User? x = await UserService().signIn(emailController.text, passwordController.text);
     if(x!=null) {
@@ -162,7 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             authUser();
-                            getNotification();
                           }
                         },
                         child: const Text("Login"),

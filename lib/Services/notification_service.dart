@@ -62,13 +62,17 @@ class notificationService{
   }
 
 
-  Future<notificationsModel> getLastNotificationsSQL() async
+  Future<notificationsModel?> getLastNotificationsSQL() async
   {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int userId = await prefs.getInt("currentUser")!;
     List<Map> response = await mydb.readData('''
     select * from Notifications where UserId = '$userId'
     ''');
+    if(response.isEmpty)
+      {
+         return null;
+       }
     notificationsModel notifications=notificationsModel(userEmail: response[response.length-1]['Email'], message: response[response.length-1]['message']);
     return notifications;
   }

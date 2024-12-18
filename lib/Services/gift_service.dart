@@ -50,6 +50,21 @@ class GiftService{
         return gifts;
   }
 
+
+  Future<Map> getGiftsSQLId(int giftId) async
+  {
+    List<Map> response = await mydb.readData('''
+    select * from Gifts where ID = '$giftId'
+    ''');
+    Map gifts;
+      gifts = {'image':response[0]['Thumbnail'],
+      'eventId':response[0]['EventId'],
+      };
+
+    return gifts;
+  }
+
+
   Future<List<Gift>> getGiftsSQL(int EventID) async
   {
      List<Map> response = await mydb.readData('''

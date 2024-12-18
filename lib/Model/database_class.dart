@@ -79,6 +79,15 @@ class DatabaseClass{
       );
       ''');
 
+     await db.execute('''
+      CREATE TABLE IF NOT EXISTS Pledged (
+        UserId INTEGER NOT NULL REFERENCES Users (ID),
+        GiftId INTEGER NOT NULL REFERENCES Gifts (ID),
+        PRIMARY KEY (UserId, GiftId)
+      );
+      ''');
+
+
       print("DATABASE HAS BEEN CREATED ........");
     });
     return mydb;

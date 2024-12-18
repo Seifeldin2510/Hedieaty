@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/pledged_model.dart';
+import 'package:hedieaty/Services/pledge_service.dart';
 
 class PledgedGiftListPage extends StatefulWidget {
   const PledgedGiftListPage({super.key});
@@ -8,9 +10,24 @@ class PledgedGiftListPage extends StatefulWidget {
 }
 
 class _PledgedGiftListPageState extends State<PledgedGiftListPage> {
-  List<String> gifts = ["assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg","assets/stack-gift-boxes-icon-isolated.jpg"];
-  List<String> friends = ["Seif","Laurent","Tracy","Claire","Joe","Mark","Williams","seif eldin"];
-  List<String> time =["25/10","10/10","1/1","9/5","9/5","7/7","2/2","25/10"];
+
+  List<PledgedGifts> pledgedGifts = [];
+
+  Future<void>getPledgedGifts() async
+  {
+    pledgedGifts = await PledgedGiftService().getMyPledgedGiftsSQL();
+    setState(() {
+
+    });
+  }
+
+
+  @override
+  void initState() {
+    getPledgedGifts();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +37,7 @@ class _PledgedGiftListPageState extends State<PledgedGiftListPage> {
         leading: Image.asset("assets/stack-gift-boxes-icon-isolated.jpg"),
       ),
       body: ListView.builder(
-          itemCount: gifts.length,
+          itemCount: pledgedGifts.length,
           itemBuilder: (context,index)
           {
             return Center(
@@ -29,9 +46,9 @@ class _PledgedGiftListPageState extends State<PledgedGiftListPage> {
                   elevation: 20,
                   shadowColor: Color(0Xaaaaaa),
                   child: ListTile(
-                    leading: Image.asset(gifts[index]),
-                    title: Text("Friend : ${friends[index]}"),
-                    subtitle: Text("due date : ${time[index]}"),
+                    leading: Image.network(pledgedGifts[index].image.replaceAll('Z', '/')),
+                    title: Text("Friend : ${pledgedGifts[index].name}"),
+                    subtitle: Text("due date : ${pledgedGifts[index].date}"),
                   )
                 ),
               ),

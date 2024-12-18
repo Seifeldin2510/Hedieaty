@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hedieaty/Model/notifications_model.dart';
 import 'package:hedieaty/Model/user_model.dart';
+import 'package:hedieaty/Services/notification_service.dart';
 import 'package:hedieaty/Services/user_service.dart';
 import 'package:hedieaty/View/friends_list_page.dart';
 import 'package:hedieaty/View/notification_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
 import 'event_list_page.dart';
 import 'gift_list_page.dart';
@@ -30,10 +33,30 @@ class _HomePageState extends State<HomePage> {
     pages.add(GiftListPage(current: true,eventId: 0,));
     pages.add(notificationPage());
     }
+
+  getNotification()async{
+    notificationsModel? notification = await notificationService().getLastNotificationsSQL();
+    if(notification != null) {
+    toastification.show(
+      context: context,
+      type: ToastificationType.success,
+      style: ToastificationStyle.minimal,
+      title: Text(notification.message),
+      autoCloseDuration: const Duration(seconds: 5),
+      alignment: Alignment.topCenter,
+      primaryColor: Colors.white,
+      backgroundColor: Color(0xff617ddf),
+      foregroundColor: Colors.white,
+    );
+    }
+  }
+
+
   List<Widget> pages = [const FriendsListPage(),];
   @override
   void initState() {
     getUserdata();
+    getNotification();
     super.initState();
   }
 

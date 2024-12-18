@@ -33,6 +33,19 @@ Future<List<Event>> getallEventsSQL(int UserID) async
   return events;
 }
 
+  Future<Map> getEventsSQLId(int EventId) async
+  {
+    List<Map> response = await mydb.readData('''
+  select * from Events where ID = '$EventId'
+  ''');
+    Map events ;
+      events = {'date':response[0]['Date'],
+      'userId':response[0]['UserID']
+      };
+    return events;
+  }
+
+
 Future UpdateEvent(int id , String name , String date , String location , String description,int userid) async
 {
   await mydb.updateData('''
@@ -46,8 +59,6 @@ Future deleteEvent(int id) async{
     delete from Events where ID = '$id'
     ''');
 }
-
-
 
   Future<List> fetchdata()async
   {
