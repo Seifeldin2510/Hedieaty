@@ -60,8 +60,22 @@ class _AddFriendState extends State<AddFriend> {
                 FloatingActionButton(onPressed: () async{
                   SharedPreferences pref = await SharedPreferences.getInstance();
                   int myId = pref.getInt("currentUser")!;
-                  int id = await UserService().getUserByemail(friendEmailController.text);
-                  FriendService().addFriend(myId,id);
+                  int? id = await UserService().getUserDataByEmail(friendEmailController.text);
+                  if(id==null)
+                    {
+                      SnackBar snackBar = SnackBar(
+                        content:
+                        const Text("This email is not correct"),
+                        duration: const Duration(seconds: 5),
+                        action: SnackBarAction(
+                          label: "Ok",
+                          onPressed: (){},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  else {
+                  FriendService().addFriend(myId, id);
                   FriendService().addFriendsFireBase(id);
                   userModel user = await UserService().getUsers(myId);
                   String message = "User ${user.username} add you to his friends List";
@@ -70,8 +84,9 @@ class _AddFriendState extends State<AddFriend> {
                   await notificationService().addNotificationToFireBase(notificationId, message, user.email, id);
                   Navigator.pop(context);
                   Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-                },
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                }
+              },
                   child: Text('ADD'),
 
                 ),

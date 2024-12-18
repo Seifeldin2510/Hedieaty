@@ -1,25 +1,20 @@
-import 'dart:io';
-
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emojis.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty/Model/gifts_model.dart';
+import 'package:hedieaty/Services/gift_service.dart';
 
 class GiftDetailsPage extends StatefulWidget {
   Gift gift;
-  GiftDetailsPage({super.key,required this.gift});
+  int eventId;
+  bool current;
+  GiftDetailsPage({super.key,required this.gift,required this.eventId,required this.current});
 
   @override
   State<GiftDetailsPage> createState() => _GiftDetailsPageState();
 }
 
 class _GiftDetailsPageState extends State<GiftDetailsPage> {
-  final _formKey=GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  List<bool>  isSelected = [true,false];
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +81,23 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: ElevatedButton(
+                      style: TextButton.styleFrom(backgroundColor: widget.gift.pledge?Colors.green:Colors.red),
+                        onPressed: () async{
+                      if(!widget.current) {
+                        widget.gift.pledge = !(widget.gift.pledge);
+                        await GiftService().UpdateGift(widget.gift.id, widget.gift.title, widget.gift.description.replaceAll("'", "''"), widget.gift.thumbnail.replaceAll('/', 'Z'), widget.gift.brand, widget.gift.category, widget.gift.price, widget.gift.pledge ? 1 : 0, widget.eventId);
+                        await GiftService().updateGiftFire(widget.gift.id, widget.gift.title, widget.gift.description, widget.gift.thumbnail, widget.gift.brand, widget.gift.category, widget.gift.price, widget.gift.pledge ? 1 : 0, widget.eventId);
+                        setState(() {});
+                      }
+                    },
+                        child:widget.gift.pledge?Text("Gift all ready pledged"):Text("Pledge gift"),
+                    ),
+                ),
+              )
             ],
           ),
         ),

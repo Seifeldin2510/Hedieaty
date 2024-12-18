@@ -104,7 +104,7 @@ class _GiftListPageState extends State<GiftListPage> {
                                       width: 100,
                                       child: InkWell(
                                           onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftDetailsPage(gift: gifts[index],)));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftDetailsPage(gift: gifts[index],eventId: widget.eventId,current: widget.current,)));
                                           },
                                           child: Text(gifts[index].title,
                                             overflow: TextOverflow.ellipsis,

@@ -110,6 +110,23 @@ int getcount()
     ''');
   }
 
+
+  Future<int?> getUserDataByEmail(String email) async
+  {
+    email = email.replaceAll('@', 'a');
+    var x = await mydb.readData('''
+    select * from Users where Email = '$email'
+    ''');
+    if(x.length == 0)
+      {
+        return null;
+      }
+    else
+      {
+        return x[0]['ID'];
+      }
+  }
+
   Future<int> getUserByemail(String email) async{
     email = email.replaceAll('@', 'a');
     var x = await mydb.readData('''
