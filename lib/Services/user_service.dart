@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:hedieaty/Model/database_class.dart';
 import 'package:hedieaty/Services/event_Service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +15,16 @@ class UserService{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   DatabaseClass mydb = DatabaseClass();
 
-
+Future<void> updateUser(int age , String firstname)async{
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user!.uid;
+  await FirebaseFirestore.instance.collection('users').doc(uid).update(
+    {
+      'age':age,
+      'Firstname': firstname,
+    }
+  );
+}
   Future<List<userModel>> getFriends() async {
     List<userModel> users = [];
     try{
@@ -147,10 +157,14 @@ int getcount()
   }
 
 
-
-
-
-
+  Future<void> updateUserSQL(int age , String firstname)async{
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  int id = pref.getInt("currentUser")!;
+  await mydb.updateData('''
+  update Users set Firstname = '$firstname', age = '$age'
+  where ID = '$id'
+  ''');
+  }
 
 
 

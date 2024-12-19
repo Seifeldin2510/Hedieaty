@@ -100,10 +100,17 @@ class _SignupPageState extends State<SignupPage> {
               key : _formKey,
               child:ListView(
                 children: [
-                  const Icon(Icons.person , size: 90,),
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.white,
+                        child: const Icon(Icons.person , size: 90, color: Color(0xff617ddf),)),
+                  ),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:
                     TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       controller: firstNameController,
                       validator: (value){
                         if(value!.isEmpty)
@@ -111,16 +118,18 @@ class _SignupPageState extends State<SignupPage> {
                           return "Name must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
+                          errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color:Colors.black,width: 5)
                           ),
-                          label: Text("Enter First Name",)),
+                          label: Text("Enter First Name",style: TextStyle(color: Colors.white,fontSize: 25),)),
                     ),
                   ),
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:
                     TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       controller: lastNameController,
                       validator: (value){
                         if(value!.isEmpty)
@@ -128,16 +137,18 @@ class _SignupPageState extends State<SignupPage> {
                           return "Name must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
+                          errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color:Colors.black,width: 5)
                           ),
-                          label: Text("Enter Last Name",)),
+                          label: Text("Enter Last Name",style: TextStyle(color: Colors.white,fontSize: 25),)),
                     ),
                   ),
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:
                     TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       controller: userNameController,
                       validator: (value){
                         if(value!.isEmpty)
@@ -145,16 +156,18 @@ class _SignupPageState extends State<SignupPage> {
                           return "Name must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
+                          errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color:Colors.black,width: 5)
                           ),
-                          label: Text("Enter User Name",)),
+                          label: Text("Enter User Name",style: TextStyle(color: Colors.white,fontSize: 25),)),
                     ),
                   ),
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:
                     TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       controller: ageController,
                       validator: (value){
                         if(value!.isEmpty)
@@ -162,16 +175,18 @@ class _SignupPageState extends State<SignupPage> {
                           return "Age must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
+                          errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color:Colors.black,width: 5)
                           ),
-                          label: Text("Enter Age",)),
+                          label: Text("Enter Age",style: TextStyle(color: Colors.white,fontSize: 25),)),
                     ),
                   ),
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:
                     TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       controller: emailController,
                       validator: (value){
                         if(value!.isEmpty)
@@ -179,17 +194,19 @@ class _SignupPageState extends State<SignupPage> {
                           return "Email must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
+                        errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color:Colors.black,width: 5)
                         ),
-                        label: Text("Enter email",),),
+                        label: Text("Enter email",style: TextStyle(color: Colors.white,fontSize: 25),),),
                     ),
                   ),
 
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:
                     TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       controller: imageController,
                       validator: (value){
                         if(value!.isEmpty)
@@ -197,18 +214,20 @@ class _SignupPageState extends State<SignupPage> {
                           return "image link must not be empty";
                         }
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color:Colors.black,width: 5)
                           ),
-                          label: Text("Enter Image link",)),
+                          label: Text("Enter Image link",style: TextStyle(color: Colors.white,fontSize: 25),)),
                     ),
                   ),
 
 
 
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       obscureText:hidePassword ,
                       controller: passwordController,
                       validator:(value){
@@ -218,14 +237,16 @@ class _SignupPageState extends State<SignupPage> {
                         }
                       },
                       decoration: InputDecoration(
+                        errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color:Colors.black,width: 5)
                         ),
-                        label: const Text("Enter password",),
+                        label: const Text("Enter password",style: TextStyle(color: Colors.white,fontSize: 25),),
                         suffixIcon: IconButton(onPressed: (){
                           hiddenPassword();
                         },
                           icon: Icon(
+                            color:Colors.white,
                             hidePassword?Icons.visibility:Icons.visibility_off,
                           ),
                         ),
@@ -233,8 +254,9 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
 
-                  Padding(padding: const EdgeInsets.all(4.0),
+                  Padding(padding: const EdgeInsets.all(5.0),
                     child:TextFormField(
+                      style: TextStyle(color: Colors.white,fontSize: 25),
                       obscureText:hidePassword ,
                       controller: confirmPasswordController,
                       validator:(value){
@@ -244,14 +266,16 @@ class _SignupPageState extends State<SignupPage> {
                         }
                       },
                       decoration: InputDecoration(
+                        errorStyle: TextStyle(fontSize: 15,color: Colors.red[900]),
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color:Colors.black,width: 5)
                         ),
-                        label:const  Text("Confirm password",),
+                        label:const  Text("Confirm password",style: TextStyle(color: Colors.white,fontSize: 25),),
                         suffixIcon: IconButton(onPressed: (){
                           hiddenPassword();
                         },
                           icon: Icon(
+                            color:Colors.white,
                               hidePassword?Icons.visibility:Icons.visibility_off,
                           ),
                         ),
@@ -260,6 +284,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
 
                   FloatingActionButton(
+                    backgroundColor: Color(0xff617ddf),
                     onPressed: ()
                     {
                       if(_formKey.currentState!.validate()){
@@ -280,11 +305,16 @@ class _SignupPageState extends State<SignupPage> {
                     },
                     child: const Text("Signup"),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(onPressed: (){
-                      Navigator.pop(context);
-                    }, child: Text("Back")),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ElevatedButton(
+                          style:TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
+                          onPressed: (){
+                        Navigator.pop(context);
+                      }, child: Text("Back")),
+                    ),
                   )
                 ],
               ),

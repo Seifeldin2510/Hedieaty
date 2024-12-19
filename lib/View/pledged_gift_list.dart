@@ -41,7 +41,8 @@ class _PledgedGiftListPageState extends State<PledgedGiftListPage> {
           itemBuilder: (context,index)
           {
             return Center(
-              child: Padding(padding: EdgeInsets.all(10),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
                 child: Card(
                   elevation: 20,
                   shadowColor: Color(0Xaaaaaa),
@@ -56,6 +57,7 @@ class _PledgedGiftListPageState extends State<PledgedGiftListPage> {
           }
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff617ddf),
         onPressed: ()
         {
           Navigator.pop(context);

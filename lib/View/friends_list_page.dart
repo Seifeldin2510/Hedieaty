@@ -49,7 +49,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (contex)=>AddFriend()));
           },
-              icon: const Icon(Icons.add))
+              icon: const Icon(Icons.person_add_alt_1,size: 35,))
         ],
       ),
       body: Column(
@@ -79,6 +79,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
                 Container(
                   margin: const EdgeInsets.all(10.0) ,
                   child: ElevatedButton(
+                    style: TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
                     onPressed: () {
                       users = selectedUsers.where((user) => user.firstName.toLowerCase() == searchValue.toLowerCase()).toList();
                       setState(() {
@@ -95,22 +96,30 @@ class _FriendsListPageState extends State<FriendsListPage> {
             child: ListView.separated(
               itemCount: users.length ,
               itemBuilder:(context,index){
-                return ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    child: Image.network(users[index].image) ,
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 8, 25, 8),
+                  child: Card(
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 20,
+                        child: Image.network(users[index].image) ,
+                      ),
+                      title: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage(current: false,userId: users[index].id,)));
+                        },
+                        child:Text("${users[index].firstName} ${users[index].lastName}"),
+                      ),
+                      subtitle: Text("Event ${users[index].eventNumber}"),
+                    ),
                   ),
-                  title: InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> EventListPage(current: false,userId: users[index].id,)));
-                    },
-                    child:Text("${users[index].firstName} ${users[index].lastName}"),
-                  ),
-                  subtitle: Text("Event ${users[index].eventNumber}"),
                 );
               },
               separatorBuilder: (context,index){
-                return Divider();
+                return Divider(
+                  thickness: 2,
+                  color: Color(0xff617ddf),
+                );
               },
             ),
           )
@@ -120,6 +129,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff617ddf),
         onPressed: ()
         {
           Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfilePage()));

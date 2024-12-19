@@ -34,29 +34,10 @@ class _HomePageState extends State<HomePage> {
     pages.add(notificationPage());
     }
 
-  getNotification()async{
-    notificationsModel? notification = await notificationService().getLastNotificationsSQL();
-    if(notification != null) {
-    toastification.show(
-      context: context,
-      type: ToastificationType.success,
-      style: ToastificationStyle.minimal,
-      title: Text(notification.message),
-      autoCloseDuration: const Duration(seconds: 5),
-      alignment: Alignment.topCenter,
-      primaryColor: Colors.white,
-      backgroundColor: Color(0xff617ddf),
-      foregroundColor: Colors.white,
-    );
-    }
-  }
-
-
   List<Widget> pages = [const FriendsListPage(),];
   @override
   void initState() {
     getUserdata();
-    getNotification();
     super.initState();
   }
 
@@ -76,6 +57,12 @@ class _HomePageState extends State<HomePage> {
       body: pages[selectedIndex],
       bottomNavigationBar:
       BottomNavigationBar(
+        selectedIconTheme: IconThemeData(size: 50,opacity: 1),
+        unselectedIconTheme: IconThemeData(size: 20,opacity: 0.5),
+        selectedFontSize: 20,
+        unselectedFontSize: 15,
+        selectedItemColor: Color(0xff617ddf),
+        unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: changePage,

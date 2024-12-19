@@ -118,6 +118,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         ),
 
                         FloatingActionButton(
+                          backgroundColor: Color(0xff617ddf),
                           onPressed: () async
                           {
                             if(_formKey.currentState!.validate()){
@@ -145,7 +146,9 @@ class _AddEventPageState extends State<AddEventPage> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: ElevatedButton(onPressed: (){
+              child: ElevatedButton(
+                  style: TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
+                  onPressed: (){
                 Navigator.pop(context);
               }, child: Text("Back")),
             )

@@ -31,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferences pref = await SharedPreferences.getInstance();
       int id = await UserService().getUserByemail(emailController.text);
       pref.setInt("currentUser", id );
+      getNotification();
       Navigator.of(context).pop();
       Navigator.push(
           context,
@@ -59,6 +60,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
     });
   }
+
+  getNotification()async{
+    notificationsModel? notification = await notificationService().getLastNotificationsSQL();
+    if(notification != null) {
+      toastification.show(
+        context: context,
+        type: ToastificationType.success,
+        style: ToastificationStyle.minimal,
+        title: Text(notification.message),
+        autoCloseDuration: const Duration(seconds: 5),
+        alignment: Alignment.topCenter,
+        primaryColor: Colors.white,
+        backgroundColor: Color(0xff617ddf),
+        foregroundColor: Colors.white,
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 5,
                       ),
                       const Text("Login", style: TextStyle(
-                        fontSize: 50, fontWeight: FontWeight.bold,),),
+                        fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),),
                       Padding(padding: const EdgeInsets.all(15),
                         child:
                         TextFormField(
+                          style: TextStyle(color: Colors.white,fontSize: 25),
                           controller: emailController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -112,13 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                              borderSide: BorderSide(color:Colors.black,width: 5)
+                              borderSide: BorderSide(color:Colors.white,width: 5)
                             ),
-                            label: Text("Enter email"),),
+                            label: Text("Enter email",style: TextStyle(color: Colors.white,fontSize: 25),),),
                         ),
                       ),
                       Padding(padding: const EdgeInsets.all(15),
                         child: TextFormField(
+                          style: TextStyle(color: Colors.white,fontSize: 25),
                           obscureText: hidePassword,
                           controller: passwordController,
                           validator: (value) {
@@ -129,21 +150,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                                borderSide: BorderSide(color:Colors.black,width: 5)
+                                borderSide: BorderSide(color:Colors.white,width: 5)
                             ),
-                            label: const Text("Enter password"),
+                            label: const Text("Enter password",style: TextStyle(color: Colors.white,fontSize: 25),),
                             suffixIcon: IconButton(onPressed: () {
                               hiddenPassword();
                             },
                               icon: Icon(
                                 hidePassword ? Icons.visibility : Icons
                                     .visibility_off,
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ),
                       ),
                       FloatingActionButton(
+                        backgroundColor: Color(0xff617ddf),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             authUser();
@@ -151,11 +174,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text("Login"),
                       ),
-                      TextButton(onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => const SignupPage()));
-                      },
-                        child: const Text("Click Here to signup",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextButton(
+                          style: TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
+                          onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => const SignupPage()));
+                        },
+                          child: const Text("Click Here to signup",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),),
+                        ),
                       )
                     ],
                   ),

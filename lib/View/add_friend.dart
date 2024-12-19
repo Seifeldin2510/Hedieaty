@@ -37,63 +37,65 @@ class _AddFriendState extends State<AddFriend> {
                       child:
                         Form(
                         key : _formKey,
-                          child:ListView(
-                              children: [
-                                Padding(padding: const EdgeInsets.all(4.0),
-                                  child:
-                                    TextFormField(
-                                    controller: friendEmailController,
-                                    validator: (value){
-                                      if(value!.isEmpty)
-                                      {
-                                      return "Email must not be empty";
-                                      }
-                                      },
-                                      decoration: const InputDecoration(label: Text("Enter Friend Email",)),
-                                  ),
-                                ),
-                            ],
+                          child:Padding(padding: const EdgeInsets.all(4.0),
+                            child:
+                              TextFormField(
+                              controller: friendEmailController,
+                              validator: (value){
+                                if(value!.isEmpty)
+                                {
+                                return "Email must not be empty";
+                                }
+                                },
+                                decoration: const InputDecoration(label: Text("Enter Friend Email",)),
+                            ),
                           ),
                           ),
                         ),
                       ),
-                FloatingActionButton(onPressed: () async{
-                  SharedPreferences pref = await SharedPreferences.getInstance();
-                  int myId = pref.getInt("currentUser")!;
-                  int? id = await UserService().getUserDataByEmail(friendEmailController.text);
-                  if(id==null)
-                    {
-                      SnackBar snackBar = SnackBar(
-                        content:
-                        const Text("This email is not correct"),
-                        duration: const Duration(seconds: 5),
-                        action: SnackBarAction(
-                          label: "Ok",
-                          onPressed: (){},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  else {
-                  FriendService().addFriend(myId, id);
-                  FriendService().addFriendsFireBase(id);
-                  userModel user = await UserService().getUsers(myId);
-                  String message = "User ${user.username} add you to his friends List";
-                  await notificationService().addNotificationSQL(message, user.email, id);
-                  int notificationId = await notificationService().getNewNotificationsAddSQL(message, user.email, id);
-                  await notificationService().addNotificationToFireBase(notificationId, message, user.email, id);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                }
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: FloatingActionButton(
+                    backgroundColor: Color(0xff617ddf),
+                    onPressed: () async{
+                    SharedPreferences pref = await SharedPreferences.getInstance();
+                    int myId = pref.getInt("currentUser")!;
+                    int? id = await UserService().getUserDataByEmail(friendEmailController.text);
+                    if(id==null)
+                      {
+                        SnackBar snackBar = SnackBar(
+                          content:
+                          const Text("This email is not correct"),
+                          duration: const Duration(seconds: 5),
+                          action: SnackBarAction(
+                            label: "Ok",
+                            onPressed: (){},
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    else {
+                    FriendService().addFriend(myId, id);
+                    FriendService().addFriendsFireBase(id);
+                    userModel user = await UserService().getUsers(myId);
+                    String message = "User ${user.username} add you to his friends List";
+                    await notificationService().addNotificationSQL(message, user.email, id);
+                    int notificationId = await notificationService().getNewNotificationsAddSQL(message, user.email, id);
+                    await notificationService().addNotificationToFireBase(notificationId, message, user.email, id);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                  }
               },
-                  child: Text('ADD'),
+                    child: Text('ADD'),
 
+                  ),
                 ),
                 ],
                   ),
                 ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor:Color(0xff617ddf),
         onPressed: () {
           Navigator.pop(context);
         },

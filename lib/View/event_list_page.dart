@@ -49,7 +49,7 @@ class _EventListPageState extends State<EventListPage> {
         leading: Image.asset("assets/stack-gift-boxes-icon-isolated.jpg"),
         actions: [
           DropdownButton(
-              icon: Icon(Icons.sort , color: Colors.white,),
+              icon: Icon(Icons.sort , color: Colors.white,size: 35,),
               items: sort.map((x){
                 return DropdownMenuItem(value: x,child: Text('$x'));
               }).toList(), onChanged: (var x)
@@ -76,8 +76,11 @@ class _EventListPageState extends State<EventListPage> {
                         },
                           child: Card(
                             child: ListTile(
-                              title: Text(events[index].name),
-                              subtitle: Text(events[index].date),
+                              title: Text(events[index].name,style: TextStyle(fontSize: 25),),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(events[index].date,style: TextStyle(fontSize: 15),),
+                              ),
                             ),
                           )
                       ),
@@ -85,8 +88,8 @@ class _EventListPageState extends State<EventListPage> {
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>AddEventPage(id: events[index].id,name: events[index].name,date: events[index].date,description: events[index].description,location: events[index].location,)));
                         },
-                        icon: Icon(Icons.edit),
-                      ):Icon(Icons.event_note),
+                        icon: Icon(Icons.edit,color: Colors.orange,size: 35,),
+                      ):Icon(Icons.event_note,color: Color(0xff617ddf),size: 40,),
                       trailing:widget.current?IconButton(
                         onPressed: () async {
                           EventService().deleteEvent(events[index].id);
@@ -96,7 +99,7 @@ class _EventListPageState extends State<EventListPage> {
 
                           });
                         },
-                        icon: Icon(Icons.delete),
+                        icon: Icon(Icons.delete,color: Colors.red,size: 35,),
                       ):null
                     );
                   },
@@ -107,7 +110,9 @@ class _EventListPageState extends State<EventListPage> {
                 ),
               ),
             ),
-            widget.current? Text(""):ElevatedButton(onPressed: (){
+            widget.current? Text(""):ElevatedButton(
+              style: TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
+              onPressed: (){
               Navigator.pop(context);
             }, child: Text("Back"),
     )
@@ -117,7 +122,7 @@ class _EventListPageState extends State<EventListPage> {
       floatingActionButton: Visibility(
         visible: widget.current?true:false,
         child: FloatingActionButton(
-
+          backgroundColor: Color(0xff617ddf),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddEventPage(id: 0,name: "",date: "",description: "",location: "",)));
           },

@@ -29,10 +29,13 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
         child: Expanded(
           child: ListView(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 200,
-                child: Image.network(widget.gift.thumbnail.replaceAll('Z', '/')),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 200,
+                  child: Image.network(widget.gift.thumbnail.replaceAll('Z', '/')),
+                ),
               ),
               Center(
                   child: Padding(
@@ -117,6 +120,7 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff617ddf),
         onPressed: ()
         {
           Navigator.pop(context);

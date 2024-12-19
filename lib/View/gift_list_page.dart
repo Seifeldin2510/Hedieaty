@@ -51,7 +51,7 @@ class _GiftListPageState extends State<GiftListPage> {
         leading: Image.asset("assets/stack-gift-boxes-icon-isolated.jpg"),
         actions: [
           DropdownButton(
-              icon: Icon(Icons.sort , color: Colors.white,),
+              icon: Icon(Icons.sort , color: Colors.white,size: 35,),
               items: sort.map((x){
                 return DropdownMenuItem(value: x,child: Text('$x'));
               }).toList(), onChanged: (var x)
@@ -107,8 +107,11 @@ class _GiftListPageState extends State<GiftListPage> {
                                           onTap: (){
                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> GiftDetailsPage(gift: gifts[index],eventId: widget.eventId,current: widget.current,)));
                                           },
-                                          child: Text(gifts[index].title,
-                                            overflow: TextOverflow.ellipsis,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(left: 10,top: 10),
+                                            child: Text(gifts[index].title,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                       ),
                                     ),
@@ -152,7 +155,9 @@ class _GiftListPageState extends State<GiftListPage> {
             ),
           ),
       widget.current?(widget.eventId == 0?Text(""):
-      ElevatedButton(onPressed: (){
+      ElevatedButton(
+        style: TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
+        onPressed: (){
         Navigator.push(context,MaterialPageRoute(builder: (context)=>AddNewGift(current: widget.current,eventId:widget.eventId)));
       }, child: Text("Add New Gift"),
       )
@@ -166,6 +171,7 @@ class _GiftListPageState extends State<GiftListPage> {
       floatingActionButton: Visibility(
         visible: widget.eventId == 0? false:true,
         child: FloatingActionButton(
+          backgroundColor: Color(0xff617ddf),
           onPressed: (){
             Navigator.pop(context);
           },

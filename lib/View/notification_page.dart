@@ -43,14 +43,25 @@ class _notificationPageState extends State<notificationPage> {
             child: ListView.separated(
               itemCount: notifications.length ,
               itemBuilder:(context,index){
-                return ListTile(
-                  title: Text("${notifications[index].message}"),
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: Card(
+                    child: ListTile(
+                      title: Text("${notifications[index].message}"),
 
-                  subtitle: Text("sender email: ${notifications[index].userEmail.replaceFirst("agmail", "@gmail")}"),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Text("sender email: ${notifications[index].userEmail.replaceFirst("agmail", "@gmail")}"),
+                      ),
+                    ),
+                  ),
                 );
               },
               separatorBuilder: (context,index){
-                return Divider();
+                return Divider(
+                  thickness: 2,
+                  color: Color(0xff617ddf),
+                );
               },
             ),
           )
