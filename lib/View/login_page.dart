@@ -107,89 +107,87 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
           ),
-          Expanded(
-            child: ListView(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 5,
+          ListView(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text("Login", style: TextStyle(
+                      fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),),
+                    Padding(padding: const EdgeInsets.all(15),
+                      child:
+                      TextFormField(
+                        style: TextStyle(color: Colors.white,fontSize: 25),
+                        controller: emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Email must not be empty";
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color:Colors.white,width: 5)
+                          ),
+                          label: Text("Enter email",style: TextStyle(color: Colors.white,fontSize: 25),),),
                       ),
-                      const Text("Login", style: TextStyle(
-                        fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),),
-                      Padding(padding: const EdgeInsets.all(15),
-                        child:
-                        TextFormField(
-                          style: TextStyle(color: Colors.white,fontSize: 25),
-                          controller: emailController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Email must not be empty";
-                            }
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color:Colors.white,width: 5)
-                            ),
-                            label: Text("Enter email",style: TextStyle(color: Colors.white,fontSize: 25),),),
-                        ),
-                      ),
-                      Padding(padding: const EdgeInsets.all(15),
-                        child: TextFormField(
-                          style: TextStyle(color: Colors.white,fontSize: 25),
-                          obscureText: hidePassword,
-                          controller: passwordController,
-                          validator: (value) {
-                            if (value == null || value.length < 8) {
-                              return "Password must be more than 8 characters";
-                            }
+                    ),
+                    Padding(padding: const EdgeInsets.all(15),
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white,fontSize: 25),
+                        obscureText: hidePassword,
+                        controller: passwordController,
+                        validator: (value) {
+                          if (value == null || value.length < 8) {
+                            return "Password must be more than 8 characters";
+                          }
 
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color:Colors.white,width: 5)
+                          ),
+                          label: const Text("Enter password",style: TextStyle(color: Colors.white,fontSize: 25),),
+                          suffixIcon: IconButton(onPressed: () {
+                            hiddenPassword();
                           },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color:Colors.white,width: 5)
-                            ),
-                            label: const Text("Enter password",style: TextStyle(color: Colors.white,fontSize: 25),),
-                            suffixIcon: IconButton(onPressed: () {
-                              hiddenPassword();
-                            },
-                              icon: Icon(
-                                hidePassword ? Icons.visibility : Icons
-                                    .visibility_off,
-                                color: Colors.white,
-                              ),
+                            icon: Icon(
+                              hidePassword ? Icons.visibility : Icons
+                                  .visibility_off,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
-                      FloatingActionButton(
-                        backgroundColor: Color(0xff617ddf),
+                    ),
+                    FloatingActionButton(
+                      backgroundColor: Color(0xff617ddf),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          authUser();
+                        }
+                      },
+                      child: const Text("Login"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        style: TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            authUser();
-                          }
-                        },
-                        child: const Text("Login"),
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => const SignupPage()));
+                      },
+                        child: const Text("Click Here to signup",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextButton(
-                          style: TextButton.styleFrom(backgroundColor: Color(0xff617ddf)),
-                          onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => const SignupPage()));
-                        },
-                          child: const Text("Click Here to signup",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
