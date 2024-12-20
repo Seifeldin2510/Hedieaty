@@ -71,7 +71,7 @@ void main() {
       await tester.pumpAndSettle(Duration(seconds: 5));
       await tester.tap(find.byIcon(Icons.event_note));
       await tester.pumpAndSettle();
-      expect(find.byType(Card), findsNWidgets(4));
+      expect(find.byType(Card), findsNWidgets(5));
     });
     
     
