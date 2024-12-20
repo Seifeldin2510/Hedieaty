@@ -62,16 +62,16 @@ void main() {
       await tester.pumpAndSettle(Duration(seconds: 2));
       await tester.tap(find.byIcon(Icons.add));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextFormField).at(0), "Wedding");
-      await tester.enterText(find.byType(TextFormField).at(1), "21/12/2024");
-      await tester.enterText(find.byType(TextFormField).at(2), "Party");
-      await tester.enterText(find.byType(TextFormField).at(3), "Wedding Party");
+      await tester.enterText(find.byType(TextFormField).at(0), "Wedding1");
+      await tester.enterText(find.byType(TextFormField).at(1), "21/12/2025");
+      await tester.enterText(find.byType(TextFormField).at(2), "Party1");
+      await tester.enterText(find.byType(TextFormField).at(3), "Wedding1 Party");
       await tester.pump(Duration(seconds: 1));
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle(Duration(seconds: 5));
       await tester.tap(find.byIcon(Icons.event_note));
       await tester.pumpAndSettle();
-      expect(find.byType(Card), findsNWidgets(3));
+      expect(find.byType(Card), findsNWidgets(4));
     });
     
     
