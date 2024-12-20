@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     else
     {
       SnackBar snackBar = SnackBar(
+        key: Key("failed Login"),
         content:
         const Text("Something is Wrong"),
         duration: const Duration(seconds: 5),
